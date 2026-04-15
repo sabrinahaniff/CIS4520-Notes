@@ -84,7 +84,7 @@ Comprehensive notes for Cryptography course, converted from handwritten notes to
 
 1. **Clone this repo:**
    ```bash
-   git clone https://github.com/sabrinahaniff/CIS4520.git
+   git clone https://github.com/sabrinahaniff/CIS4520-Notes.git
    ```
 
 2. **Open in Obsidian:**
