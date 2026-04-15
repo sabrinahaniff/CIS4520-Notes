@@ -256,7 +256,7 @@ P₃ → [E_K] → C₃
 
 ### Security
 
-**NEVER USE ECB!** 🚨
+**NEVER USE ECB!** 
 
 **Problem:** Identical plaintext blocks → identical ciphertext blocks
 
