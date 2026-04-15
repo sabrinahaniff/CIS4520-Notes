@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "matrix-algebra.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "matrix-algebra"
+              "title": "README"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "matrix-algebra.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for matrix-algebra"
+              "title": "Backlinks for README"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "matrix-algebra.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from matrix-algebra"
+              "title": "Outgoing links from README"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "matrix-algebra.md",
+                "file": "README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of matrix-algebra"
+              "title": "Outline of README"
             }
           }
         ]
@@ -185,9 +185,26 @@
   },
   "active": "bc2b492f1a029b81",
   "lastOpenFiles": [
+    "diffie-hellman.md",
+    "README (1).md",
     "README.md",
-    "matrix-algebra.md",
+    "hash-functions.md",
+    "rsa.md",
+    "signatures.md",
+    "README.md",
+    "Unconfirmed 761673.crdownload",
+    "Unconfirmed 257971.crdownload",
     "Welcome.md",
+    "modular-arithmetic.md",
+    "matrix-algebra.md",
+    "classical-ciphers.md",
+    "Unconfirmed 816310.crdownload",
+    "classical-ciphers (1).md",
+    "Unconfirmed 727049.crdownload",
+    "aes.md",
+    "Unconfirmed 459985.crdownload",
+    "Unconfirmed 585405.crdownload",
+    "Unconfirmed 334179.crdownload",
     "gitignore",
     "Unconfirmed 510222.crdownload",
     "Unconfirmed 527472.crdownload"

@@ -2,7 +2,7 @@
 
 Comprehensive notes for Cryptography course, converted from handwritten notes to Obsidian markdown.
 
-> **Best viewed in [Obsidian](https://obsidian.md)** - supports math rendering and wiki-links.  
+> **Best viewed in [Obsidian](https://obsidian.md)** -  supports math rendering and wiki-links.  
 > On GitHub, click the file names below to navigate.
 
 ---
@@ -11,21 +11,51 @@ Comprehensive notes for Cryptography course, converted from handwritten notes to
 
 ### 1️ Foundations
 - [Matrix Algebra in Cryptography](01-Foundations/matrix-algebra.md)
+- [Modular Arithmetic & GCD](01-Foundations/modular-arithmetic.md)
 
-### 2️ Classical Cryptography
-- Coming soon...
+### 2️ Public Key Cryptography
+- [RSA Encryption](02-Public-Key/rsa.md)
 
-### 3️ Symmetric Cryptography
-- Coming soon...
+### 3️ Classical Cryptography
+- [Classical Ciphers](03-Classical-Ciphers/classical-ciphers.md)
+  - Caesar, Vigenère, Substitution, OTP
+  - Rail Fence, Playfair, Hill Cipher
+  - Security analysis & frequency attacks
 
-### 4️ Public Key Cryptography
-- Coming soon...
+### 4️ Symmetric Cryptography  
+- [AES & Block Cipher Modes](04-Symmetric-Crypto/aes.md)
+  - AES structure & operations
+  - Galois Fields GF(2⁸)
+  - Block cipher modes (ECB, CBC, CTR, GCM)
+  - Padding schemes
 
-### 5️ Hash Functions & Digital Signatures
-- Coming soon...
+### 5️ Hash Functions
+- [Cryptographic Hash Functions](05-Hash-Functions/hash-functions.md)
+  - MD5, SHA-1, SHA-2, SHA-3
+  - Properties & security requirements
+  - Birthday paradox & collision attacks
+  - HMAC & password hashing
+  - Applications & best practices
 
-### 6️ Advanced Topics
-- Coming soon...
+### 6️ Digital Signatures
+- [Digital Signatures & PKI](06-Digital-Signatures/signatures.md)
+  - RSA signatures
+  - DSA & ECDSA
+  - Signature padding (PSS)
+  - Certificate Authorities
+  - Chain of trust
+  - Nonce reuse attacks
+
+### 7️ Key Exchange
+- [Diffie-Hellman & Key Exchange](07-Key-Exchange/diffie-hellman.md)
+  - Diffie-Hellman protocol
+  - Discrete logarithm problem
+  - ECDH (Elliptic Curve DH)
+  - ElGamal encryption
+  - Forward secrecy & ephemeral keys
+  - Man-in-the-middle attacks
+  - Authenticated key exchange (STS, TLS)
+  - KDF & best practices
 
 ---
 
@@ -44,7 +74,7 @@ Comprehensive notes for Cryptography course, converted from handwritten notes to
 
 ---
 
-##  How to Use These Notes
+## How to Use These Notes
 
 ### Option 1: View on GitHub
 - Click any `.md` file above to read
@@ -66,7 +96,7 @@ Comprehensive notes for Cryptography course, converted from handwritten notes to
 
 ##  Course Information
 
-**Course:** CIS*4520: Introduction to Cryptography  
+**Course:** CIS4520: Introduction to Cryptography  
 
 **Topics Covered:**
 - Mathematical Foundations (Matrix Algebra, Modular Arithmetic)
@@ -79,12 +109,10 @@ Comprehensive notes for Cryptography course, converted from handwritten notes to
 
 ---
 
-##  Status
-
-This is a work-in-progress conversion from handwritten notes. Sections are being added progressively.
+## Status
 
 **Last updated:** April 15th, 2026
 
 ---
 
- *Study notes for CIS 4520. Feel free to use for studying!*
+*Study notes for CIS 4520. Feel free to use for studying!*
