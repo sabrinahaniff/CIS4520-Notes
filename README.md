@@ -1,4 +1,4 @@
-# CIS 4520: Cryptography Notes
+# CIS*4520: Cryptography Notes
 
 Comprehensive notes for Cryptography course, converted from handwritten notes to Obsidian markdown.
 
