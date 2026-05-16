@@ -1,0 +1,73 @@
+site_name: CIS*4520 - Introduction to Cryptography
+site_description: Cryptography notes from the University of Guelph
+site_author: Sabrina Haniff
+site_url: https://sabrinahaniff.github.io/CIS4520-Notes/
+
+docs_dir: .
+site_dir: site
+
+exclude_docs: |
+  .obsidian/
+  gitignore
+  site/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - toc.follow
+
+plugins:
+  - search
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: README.md
+  - Foundations:
+    - Matrix Algebra: matrix-algebra.md
+    - Modular Arithmetic & GCD: modular-arithmetic.md
+  - Classical Cryptography:
+    - Classical Ciphers: classical-ciphers.md
+  - Symmetric Cryptography:
+    - AES & Block Cipher Modes: aes.md
+  - Public Key Cryptography:
+    - RSA Encryption: rsa.md
+    - Diffie-Hellman & Key Exchange: diffie-hellman.md
+  - Hash Functions: hash-functions.md
+  - Digital Signatures: signatures.md
