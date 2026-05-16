@@ -3,14 +3,6 @@ site_description: Cryptography notes from the University of Guelph
 site_author: Sabrina Haniff
 site_url: https://sabrinahaniff.github.io/CIS4520-Notes/
 
-docs_dir: .
-site_dir: site
-
-exclude_docs: |
-  .obsidian/
-  gitignore
-  site/
-
 theme:
   name: material
   palette:
