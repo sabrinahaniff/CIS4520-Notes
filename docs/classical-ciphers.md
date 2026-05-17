@@ -303,26 +303,6 @@ $$P = K^{-1}C \bmod 26$$
 
 ## Comparison of Classical Ciphers
 
-```mermaid
-flowchart LR
-    A["❌ Caesar\nBrute force in seconds"]
-    B["❌ Rail Fence\nPattern recognition"]
-    C["⚠️ Vigenère\nKasiski attack"]
-    D["⚠️ Substitution\nFrequency analysis"]
-    E["⚠️ Playfair\nDigraph frequency"]
-    F["⚠️ Hill\nKnown plaintext attack"]
-    G["✅ OTP\nPerfectly secure"]
-
-    A -->|"stronger"| B -->|"stronger"| C -->|"stronger"| D -->|"stronger"| E -->|"stronger"| F -->|"stronger"| G
-
-    style A fill:#ef5350,color:#fff
-    style B fill:#ef5350,color:#fff
-    style C fill:#f57c00,color:#fff
-    style D fill:#f57c00,color:#fff
-    style E fill:#f9a825,color:#fff
-    style F fill:#f9a825,color:#fff
-    style G fill:#2e7d32,color:#fff
-```
 
 | Cipher | Key Space | Security | Speed | Notes |
 |--------|-----------|----------|-------|-------|
