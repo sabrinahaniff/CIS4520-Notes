@@ -31,6 +31,18 @@ The "block sizes that work" don't change when we replace the bigger number by th
 
 ### The Algorithm
 
+```mermaid
+flowchart TD
+    A(["Start: a, b"]) --> B["Divide: a = bq + r"]
+    B --> C{r == 0?}
+    C -- No --> D["Replace: a ← b, b ← r"]
+    D --> B
+    C -- Yes --> E(["GCD = b"])
+
+    style A fill:#7c4dff,color:#fff
+    style E fill:#00897b,color:#fff
+```
+
 **Repeat:**
 1. Divide: $a = bq + r$
 2. Replace: $(a, b) \to (b, r)$
@@ -240,7 +252,3 @@ This is used to compute **modular inverses** efficiently.
 3. **Modular inverse** exists only when $\gcd(a, n) = 1$
 4. **Fast exponentiation** uses binary representation
 5. All modern crypto uses **modular arithmetic**
-
----
-
-[[matrix-algebra|← Matrix Algebra]] | [[../02-Public-Key/rsa|RSA →]]

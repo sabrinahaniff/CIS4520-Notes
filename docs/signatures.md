@@ -9,23 +9,31 @@ A **digital signature** is the cryptographic equivalent of a handwritten signatu
 - **Non-repudiation** - Sender can't deny sending it
 - **Integrity** - Detects if message was modified
 
-**Analogy:** Like signing a legal document, but mathematically verifiable.
-
 ---
 
 ## How Digital Signatures Work
 
-### Signing Process
+```mermaid
+sequenceDiagram
+    participant A as Alice (Signer)
+    participant B as Bob (Verifier)
 
-1. **Hash** the message: $h = H(m)$
-2. **Encrypt hash** with private key: $s = \text{Sign}_{SK}(h)$
-3. **Send** message $m$ and signature $s$
+    Note over A: Signing
+    A->>A: Compute h = H(message)
+    A->>A: Compute s = Sign_SK(h)
+    A->>B: Send message + signature s
 
-### Verification Process
+    Note over B: Verification
+    B->>B: Compute h' = H(received message)
+    B->>B: Compute h = Verify_PK(s)
+    B->>B: Check h == h'?
 
-1. **Hash** the received message: $h' = H(m)$
-2. **Decrypt signature** with public key: $h = \text{Verify}_{PK}(s)$
-3. **Compare:** If $h = h'$ → signature valid ✓
+    alt Signatures match
+        Note over B: ✅ Valid — message is authentic and unmodified
+    else Signatures don't match
+        Note over B: ❌ Invalid — message was tampered or wrong sender
+    end
+```
 
 ---
 
@@ -151,7 +159,8 @@ Only the person with private key $d$ can create valid signature!
 
 **Signature:** $(r, s)$
 
-**CRITICAL:** $k$ must be **truly random** and **never reused!**
+!!! danger "CRITICAL"
+    $k$ must be **truly random** and **never reused!**
 
 ---
 
@@ -210,7 +219,7 @@ $$kP = P + P + \cdots + P \quad (k \text{ times})$$
 
 **Signature:** $(r, s)$
 
-**CRITICAL:** Never reuse $k$!
+!!! danger "CRITICAL: Never reuse k!"
 
 ---
 
@@ -243,9 +252,7 @@ $$kP = P + P + \cdots + P \quad (k \text{ times})$$
 
 ### The PlayStation 3 Hack (2010)
 
-Sony's PS3 signing keys were compromised because:
-
-**Problem:** They **reused the same $k$ value** in ECDSA!
+Sony's PS3 signing keys were compromised because they **reused the same $k$ value** in ECDSA!
 
 **Attack:**
 - Two signatures $(r_1, s_1)$ and $(r_2, s_2)$ with same $k$
@@ -256,7 +263,7 @@ $$k = \frac{H(m_1) - H(m_2)}{s_1 - s_2} \bmod n$$
 
 $$d = \frac{sk - H(m)}{r} \bmod n$$
 
-**Lesson:** **NEVER** reuse nonces in signatures!
+!!! danger "Lesson: NEVER reuse nonces in signatures!"
 
 ---
 
@@ -289,7 +296,7 @@ Adds **randomness** and **structure** before signing.
 - **Provably secure**
 - **Prevents forgery**
 
-**Current standard:** Always use PSS padding for RSA signatures!
+!!! success "Current standard: Always use PSS padding for RSA signatures!"
 
 ---
 
@@ -318,38 +325,22 @@ A **certificate** binds a public key to an identity.
 
 ---
 
-### Certificate Authority (CA)
-
-A **trusted third party** that signs certificates.
-
-**Process:**
-1. Website generates key pair
-2. Sends public key + identity to CA
-3. CA verifies identity
-4. CA signs certificate: $\text{Cert} = \text{Sign}_{CA}(h)$
-5. Website uses certificate
-
-**Verification:**
-1. Browser receives certificate
-2. Verifies CA signature using CA's public key
-3. If valid → trust the website's public key
-
----
-
 ### Chain of Trust
 
-**Root CAs:** Pre-installed in browsers/OS
+```mermaid
+flowchart TD
+    R(["🏛️ Root CA\n(self-signed, pre-installed\nin browsers & OS)"])
+    I["🏢 Intermediate CA\n(signed by Root CA)"]
+    W["🌐 Website Certificate\ne.g. google.com\n(signed by Intermediate CA)"]
+    B["🧑 Browser / User"]
 
-**Intermediate CAs:** Signed by root CAs
+    R -->|"Signs"| I
+    I -->|"Signs"| W
+    W -->|"Presented to"| B
+    B -->|"Verifies chain back to"| R
 
-**End-entity certificates:** Signed by intermediate CAs
-
-```
-Root CA (self-signed)
-    ↓ signs
-Intermediate CA
-    ↓ signs
-Website Certificate (google.com)
+    style R fill:#7c4dff,color:#fff
+    style B fill:#00897b,color:#fff
 ```
 
 **Verification:** Follow chain up to trusted root.
@@ -383,8 +374,6 @@ Attacker has:
 ### 3. Chosen-Message Attack
 
 Attacker can get signatures on chosen messages.
-
-**Example:** Blind signatures, multiple legitimate uses
 
 **Defense:** Secure signature scheme with proof
 
@@ -457,7 +446,3 @@ Server signs handshake to prove identity.
 7. **Use PSS padding** for RSA signatures
 8. **Certificate Authorities** establish trust in public keys
 9. **Chain of trust** connects certificates to root CAs
-
----
-
-[[../05-Hash-Functions/hash-functions|← Hash Functions]] | [Next: Key Exchange →]

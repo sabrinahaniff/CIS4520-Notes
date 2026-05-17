@@ -203,7 +203,19 @@ $$= \begin{bmatrix} 28/5 - 30/5 \\ -7/5 + 20/5 \end{bmatrix} = \begin{bmatrix} -
 
 The **Hill cipher** uses matrix multiplication to encrypt messages.
 
-**Encryption:** $C = PK \pmod{26}$
+```mermaid
+flowchart LR
+    P(["Plaintext\nvector P"]) --> E["C = KP mod 26\nMatrix multiply\nwith key K"]
+    E --> C(["Ciphertext\nvector C"])
+    C --> D["P = K⁻¹C mod 26\nMultiply by\ninverse key"]
+    D --> R(["Recovered\nPlaintext P"])
+
+    style P fill:#7c4dff,color:#fff
+    style C fill:#ef5350,color:#fff
+    style R fill:#00897b,color:#fff
+```
+
+**Encryption:** $C = KP \pmod{26}$
 - $P$ = plaintext matrix
 - $K$ = key matrix
 - $C$ = ciphertext matrix
@@ -224,7 +236,3 @@ The **Hill cipher** uses matrix multiplication to encrypt messages.
 3. **Matrix inverse enables decryption** (reverse the encryption)
 4. **Order matters** in matrix multiplication
 5. **Square matrices** are needed for inverse operations
-
----
-
-[← Back to Main](README.md)

@@ -52,11 +52,10 @@ Shift the ciphertext letter **backward** by $K$ positions.
 
 ### Security
 
-**Completely insecure!**
-
-- Only 26 possible keys
-- **Brute force:** Try all 26 shifts in seconds
-- **Frequency analysis:** Letter 'E' is most common in English
+!!! danger "Completely insecure!"
+    - Only 26 possible keys
+    - **Brute force:** Try all 26 shifts in seconds
+    - **Frequency analysis:** Letter 'E' is most common in English
 
 ---
 
@@ -149,12 +148,6 @@ $$C = P \oplus K$$
 
 (XOR each bit of plaintext with corresponding key bit)
 
-### Example
-
-**Plaintext:** HELLO (in binary)  
-**Key:** Random bits (same length)  
-**Ciphertext:** Plaintext XOR Key
-
 ---
 
 ### Security
@@ -242,16 +235,6 @@ Encrypt **pairs of letters** (digraphs):
 2. **Same column:** Shift down (wrap around)
 3. **Rectangle:** Swap with letter in same row
 
-### Example
-
-**Plaintext:** HELLO (pairs: HE, LL, O)
-
-- HE → Same row? No. Same column? No. Rectangle → HF
-- LL → Same letter → Insert X → LX → QS
-- O → Odd letter → Add X → OX → ...
-
-**Ciphertext:** (complex example)
-
 ---
 
 ### Security
@@ -320,6 +303,24 @@ $$P = K^{-1}C \bmod 26$$
 
 ## Comparison of Classical Ciphers
 
+```mermaid
+quadrantChart
+    title Classical Cipher Security vs Key Space
+    x-axis Small Key Space --> Large Key Space
+    y-axis Weak Security --> Strong Security
+    quadrant-1 Hard to break
+    quadrant-2 Theoretically strong
+    quadrant-3 Easy to break
+    quadrant-4 Large keys, still weak
+    Caesar: [0.05, 0.05]
+    Rail Fence: [0.08, 0.08]
+    Vigenere: [0.35, 0.25]
+    Substitution: [0.7, 0.2]
+    Playfair: [0.55, 0.45]
+    Hill: [0.75, 0.55]
+    OTP: [0.95, 0.95]
+```
+
 | Cipher | Key Space | Security | Speed | Notes |
 |--------|-----------|----------|-------|-------|
 | Caesar | 26 | Very weak | Fast | Brute force trivial |
@@ -367,7 +368,3 @@ Modern cryptography learned from classical failures:
 - AES algorithm is public
 - RSA algorithm is public
 - Security relies entirely on key secrecy
-
----
-
-[[../02-Public-Key/rsa|← RSA]] | [[../04-Symmetric-Crypto/aes|AES →]]

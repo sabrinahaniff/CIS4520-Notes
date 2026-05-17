@@ -4,10 +4,21 @@
 
 A **cryptographic hash function** takes an input of arbitrary length and produces a **fixed-size output** (the hash or digest).
 
-```
-Input (any size) → [Hash Function] → Output (fixed size)
-"Hello" → H(x) → a591a6d4...
-"Hello World" → H(x) → 7f83b165...
+```mermaid
+flowchart LR
+    A(["Input\n(any size)"]) --> B["Hash\nFunction H(x)"]
+    B --> C(["Output\n(fixed size)"])
+    A2(["'Hello'"]) --> B2["H(x)"]
+    B2 --> C2(["a591a6d4..."])
+    A3(["'Hello World'"])  --> B3["H(x)"]
+    B3 --> C3(["7f83b165..."])
+
+    style A fill:#7c4dff,color:#fff
+    style C fill:#00897b,color:#fff
+    style A2 fill:#7c4dff,color:#fff
+    style C2 fill:#00897b,color:#fff
+    style A3 fill:#7c4dff,color:#fff
+    style C3 fill:#00897b,color:#fff
 ```
 
 **Examples:**
@@ -99,12 +110,9 @@ For an $n$-bit hash:
 ### MD5 (Message Digest 5)
 
 **Output:** 128 bits  
-**Status:** **BROKEN** - Do not use!
 
-**Problems:**
-- Collisions found in 2004
-- Can generate collisions in seconds
-- Pre-image attacks exist
+!!! danger "BROKEN — Do not use!"
+    Collisions found in 2004. Can generate collisions in seconds.
 
 **Still used for:** Checksums (non-security), legacy systems
 
@@ -113,12 +121,9 @@ For an $n$-bit hash:
 ### SHA-1 (Secure Hash Algorithm 1)
 
 **Output:** 160 bits  
-**Status:** **DEPRECATED** - Phase out!
 
-**Problems:**
-- Theoretical collisions found in 2005
-- Practical collision in 2017 (Google's SHAttered)
-- No longer considered secure
+!!! warning "DEPRECATED — Phase out!"
+    Practical collision demonstrated in 2017 (Google's SHAttered attack).
 
 **Transition:** Move to SHA-2 or SHA-3
 
@@ -128,11 +133,11 @@ For an $n$-bit hash:
 
 **Variants:**
 - SHA-224: 224 bits
-- **SHA-256**: 256 bits  (most common)
+- **SHA-256**: 256 bits (most common)
 - SHA-384: 384 bits
 - SHA-512: 512 bits
 
-**Status:** **SECURE** - Widely used
+!!! success "SECURE — Widely used"
 
 **Structure:** Merkle-Damgård construction
 
@@ -147,14 +152,10 @@ For an $n$-bit hash:
 ### SHA-3 (Keccak)
 
 **Output:** Variable (224, 256, 384, 512 bits)  
-**Status:** **SECURE** - Newest standard
+
+!!! success "SECURE — Newest standard"
 
 **Structure:** Sponge construction (different from SHA-2)
-
-**Why a new standard?**
-- Backup in case SHA-2 is broken
-- Different design principles
-- Better performance in some scenarios
 
 **Note:** SHA-3 is **not** a replacement for SHA-2, it's an alternative.
 
@@ -164,15 +165,23 @@ For an $n$-bit hash:
 
 ### Merkle-Damgård Construction (SHA-1, SHA-2)
 
-1. **Padding:** Add bits to make message length a multiple of block size
-2. **Split:** Divide into fixed-size blocks
-3. **Iterate:** Process each block with compression function
-4. **Output:** Final state is the hash
+```mermaid
+flowchart LR
+    M["Message"] --> P["Padding\n+ length"]
+    P --> B1["Block 1"]
+    P --> B2["Block 2"]
+    P --> B3["Block 3"]
 
-```
-Message → [Pad] → Block₁ | Block₂ | Block₃
-                     ↓       ↓       ↓
-IV → [Compress] → [Compress] → [Compress] → Hash
+    IV(["IV"]) --> C1["Compress"]
+    B1 --> C1
+    C1 --> C2["Compress"]
+    B2 --> C2
+    C2 --> C3["Compress"]
+    B3 --> C3
+    C3 --> H(["Hash"])
+
+    style IV fill:#7c4dff,color:#fff
+    style H fill:#00897b,color:#fff
 ```
 
 **Vulnerability:** Length extension attacks
@@ -181,12 +190,20 @@ IV → [Compress] → [Compress] → [Compress] → Hash
 
 ### Sponge Construction (SHA-3)
 
-Two phases:
-1. **Absorbing:** Take in input blocks
-2. **Squeezing:** Produce output hash
+```mermaid
+flowchart LR
+    subgraph Absorbing
+        B1["Block 1"] --> A1["Absorb\n+ Permute"]
+        B2["Block 2"] --> A2["Absorb\n+ Permute"]
+        B3["Block 3"] --> A3["Absorb\n+ Permute"]
+        A1 --> A2 --> A3
+    end
+    subgraph Squeezing
+        A3 --> S1["Squeeze"]
+        S1 --> H(["Hash Output"])
+    end
 
-```
-Input → [Absorb] → [Absorb] → [Squeeze] → Hash
+    style H fill:#00897b,color:#fff
 ```
 
 **Advantage:** No length extension attacks
@@ -254,13 +271,7 @@ Must start with certain number of zeros.
 
 ---
 
-### 5. Hash Tables
-
-Store data with fast lookup (non-cryptographic use).
-
----
-
-### 6. Commitment Schemes
+### 5. Commitment Schemes
 
 Commit to a value without revealing it.
 
@@ -288,44 +299,24 @@ $$\text{MAC}_K(m) = \text{tag}$$
 
 ### HMAC (Hash-based MAC)
 
-Uses a hash function with a secret key.
+```mermaid
+flowchart LR
+    K["Secret Key K"] --> IP["K ⊕ ipad"]
+    K --> OP["K ⊕ opad"]
+    M["Message m"] --> IP
+    IP --> H1["Hash"]
+    H1 --> OP
+    OP --> H2["Hash"]
+    H2 --> T(["HMAC Tag"])
 
-$$\text{HMAC}_K(m) = H((K \oplus \text{opad}) || H((K \oplus \text{ipad}) || m))$$
+    style T fill:#00897b,color:#fff
+```
 
-where:
-- $K$ = secret key
-- $\text{ipad}$ = inner padding (0x36 repeated)
-- $\text{opad}$ = outer padding (0x5C repeated)
+$$\text{HMAC}_K(m) = H((K \oplus \text{opad}) \| H((K \oplus \text{ipad}) \| m))$$
 
 **Why two hashes?**
 - Prevents length extension attacks
 - Stronger security proof
-
----
-
-### Example: HMAC-SHA256
-
-```python
-import hmac
-import hashlib
-
-key = b"secret_key"
-message = b"Hello, World!"
-
-tag = hmac.new(key, message, hashlib.sha256).hexdigest()
-# Output: authentication tag
-```
-
-**Verification:**
-```python
-# Receiver computes HMAC with their copy of key
-tag_verify = hmac.new(key, message, hashlib.sha256).hexdigest()
-
-if tag == tag_verify:
-    print("Authentic!")
-else:
-    print("Tampered!")
-```
 
 ---
 
@@ -460,7 +451,3 @@ For Merkle-Damgård hashes, given $H(m)$, can compute $H(m || m')$ without knowi
 6. **Use salts** for password storage
 7. **Use KDFs** (Argon2, bcrypt) not plain hashes for passwords
 8. **HMAC** provides authenticated integrity
-
----
-
-[[../04-Symmetric-Crypto/aes|← AES]] | [[../06-Digital-Signatures/signatures|Digital Signatures →]]

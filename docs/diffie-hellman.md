@@ -47,15 +47,29 @@ These can be public and reused.
 
 ### The Protocol
 
-**Alice's side:**
-1. Choose secret $a$ (random, $1 < a < p-1$)
-2. Compute $A = g^a \bmod p$
-3. Send $A$ to Bob (public)
+```mermaid
+sequenceDiagram
+    participant A as Alice
+    participant B as Bob
+    participant E as Eve (passive attacker)
 
-**Bob's side:**
-1. Choose secret $b$ (random, $1 < b < p-1$)
-2. Compute $B = g^b \bmod p$
-3. Send $B$ to Alice (public)
+    Note over A,B: Publicly agree on prime p and generator g
+    Note over E: Eve sees p and g — that's fine
+
+    A->>A: Choose secret a
+    A->>A: Compute A = gᵃ mod p
+    B->>B: Choose secret b
+    B->>B: Compute B = gᵇ mod p
+
+    A->>B: Send A (public)
+    B->>A: Send B (public)
+    Note over E: Eve sees A and B — still can't compute key!
+
+    A->>A: Key K = Bᵃ mod p = gᵃᵇ mod p
+    B->>B: Key K = Aᵇ mod p = gᵃᵇ mod p
+
+    Note over A,B: Both now share K = gᵃᵇ mod p 🎉
+```
 
 **Alice computes:**
 $$K = B^a \bmod p = (g^b)^a = g^{ab} \bmod p$$
@@ -75,7 +89,7 @@ $$K = A^b \bmod p = (g^a)^b = g^{ab} \bmod p$$
 
 **Alice:**
 - Secret: $a = 6$
-- Compute: $A = 5^6 \bmod 23 = 15625 \bmod 23 = 8$
+- Compute: $A = 5^6 \bmod 23 = 8$
 - Send: $A = 8$
 
 **Bob:**
@@ -84,7 +98,7 @@ $$K = A^b \bmod p = (g^a)^b = g^{ab} \bmod p$$
 - Send: $B = 8$
 
 **Alice computes shared secret:**
-$$K = B^a = 8^6 \bmod 23 = 262144 \bmod 23 = 2$$
+$$K = B^a = 8^6 \bmod 23 = 2$$
 
 **Bob computes shared secret:**
 $$K = A^b = 8^{15} \bmod 23 = 2$$
@@ -163,22 +177,26 @@ Uses elliptic curve points instead of modular exponentiation.
 
 **Diffie-Hellman provides no authentication!**
 
-**Attack scenario:**
+```mermaid
+sequenceDiagram
+    participant A as Alice
+    participant D as Darth (MITM)
+    participant B as Bob
 
-```
-Alice              Darth              Bob
-  |                  |                 |
-  |--- A = g^a ----> |                 |
-  |                  |--- A' = g^d --->|
-  |                  |<--- B' = g^d ---|
-  |<--- B = g^d -----|                 |
-  |                  |                 |
+    A->>D: Send A = gᵃ
+    Note over D: Intercepts — never forwards!
+    D->>B: Send A' = gᵈ (Darth's own value)
+    B->>D: Send B = gᵇ
+    D->>A: Send B' = gᵈ (Darth's own value)
+
+    Note over A,D: Alice and Darth share K₁ = gᵃᵈ
+    Note over D,B: Darth and Bob share K₂ = gᵇᵈ
+    Note over D: Darth decrypts, reads, re-encrypts all messages!
 ```
 
-**Result:**
-- Alice thinks she shares $K_1$ with Bob (actually with Darth)
-- Bob thinks he shares $K_2$ with Alice (actually with Darth)
-- Darth can decrypt, read, re-encrypt everything!
+!!! danger "Result"
+    Alice thinks she's talking to Bob. Bob thinks he's talking to Alice.
+    Darth reads and modifies everything in between.
 
 ---
 
@@ -363,19 +381,25 @@ Combine **key exchange** with **authentication**.
 
 ---
 
-### TLS Handshake (Simplified)
+### TLS Handshake
 
-**Modern TLS 1.3 uses authenticated ECDHE:**
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
 
-1. **ClientHello:** Supported ciphers, ECDHE public key
-2. **ServerHello:** Chosen cipher, ECDHE public key, **certificate**
-3. **Certificate Verify:** Server signs handshake with private key
-4. **Finished:** MAC of handshake messages
+    C->>S: ClientHello (TLS version, cipher suites, ECDH public key)
+    S->>C: ServerHello (chosen cipher, ECDH public key)
+    S->>C: Certificate (server's public key, signed by CA)
+    S->>C: CertificateVerify (signs handshake with private key)
+    S->>C: Finished
 
-**Result:**
-- Shared secret from ECDHE
-- Server authenticated via certificate
-- Client optionally authenticated
+    Note over C: Verifies certificate chain
+    Note over C: Derives session keys from ECDH
+
+    C->>S: Finished
+    Note over C,S: Encrypted communication begins 🔒
+```
 
 ---
 
@@ -487,7 +511,3 @@ Validate received public keys.
 6. **KDF** derives proper encryption keys from DH output
 7. **TLS 1.3** uses authenticated ECDHE by default
 8. **Post-quantum** algorithms needed for quantum threat
-
----
-
-[[../06-Digital-Signatures/signatures|← Digital Signatures]] | [[README|Main Index →]]

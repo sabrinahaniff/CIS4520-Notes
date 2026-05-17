@@ -35,25 +35,24 @@ A **block cipher** encrypts data in **fixed-size blocks** (e.g., 128 bits at a t
 
 ### High-Level Flow
 
-```
-Plaintext (128 bits)
-    ↓
-Key Expansion (generate round keys)
-    ↓
-Initial Round: AddRoundKey
-    ↓
-Main Rounds (9, 11, or 13 times):
-    SubBytes
-    ShiftRows
-    MixColumns
-    AddRoundKey
-    ↓
-Final Round:
-    SubBytes
-    ShiftRows
-    AddRoundKey
-    ↓
-Ciphertext (128 bits)
+```mermaid
+flowchart TD
+    A([Plaintext\n128 bits]) --> B[Key Expansion\nGenerate round keys]
+    B --> C[AddRoundKey\nInitial Round]
+    C --> D[SubBytes]
+    D --> E[ShiftRows]
+    E --> F[MixColumns]
+    F --> G[AddRoundKey]
+    G --> H{Rounds 1–9\ncomplete?}
+    H -- No --> D
+    H -- Yes --> I[SubBytes\nFinal Round]
+    I --> J[ShiftRows]
+    J --> K[AddRoundKey]
+    K --> L([Ciphertext\n128 bits])
+
+    style A fill:#7c4dff,color:#fff
+    style L fill:#00897b,color:#fff
+    style H fill:#f57c00,color:#fff
 ```
 
 ---
@@ -246,23 +245,27 @@ A block cipher like AES encrypts **one fixed-size block** at a time. But real me
 
 Encrypt each block **independently** with the same key.
 
+```mermaid
+flowchart LR
+    P1[P₁] --> E1[AES_K]
+    P2[P₂] --> E2[AES_K]
+    P3[P₃] --> E3[AES_K]
+    E1 --> C1[C₁]
+    E2 --> C2[C₂]
+    E3 --> C3[C₃]
+    style E1 fill:#ef5350,color:#fff
+    style E2 fill:#ef5350,color:#fff
+    style E3 fill:#ef5350,color:#fff
 ```
-P₁ → [E_K] → C₁
-P₂ → [E_K] → C₂
-P₃ → [E_K] → C₃
-```
-
----
 
 ### Security
 
-**NEVER USE ECB!** 
+!!! danger "NEVER USE ECB!"
+    **Problem:** Identical plaintext blocks → identical ciphertext blocks
 
-**Problem:** Identical plaintext blocks → identical ciphertext blocks
+    **Attack:** Patterns in plaintext are visible in ciphertext
 
-**Attack:** Patterns in plaintext are visible in ciphertext
-
-**Famous example:** ECB penguin image
+    **Famous example:** ECB penguin image — encrypted but still recognizable!
 
 ---
 
@@ -272,10 +275,22 @@ P₃ → [E_K] → C₃
 
 XOR each plaintext block with the **previous ciphertext block** before encryption.
 
-```
-IV ⊕ P₁ → [E_K] → C₁
-C₁ ⊕ P₂ → [E_K] → C₂
-C₂ ⊕ P₃ → [E_K] → C₃
+```mermaid
+flowchart LR
+    IV([IV]) --> X1((⊕))
+    P1[P₁] --> X1
+    X1 --> E1[AES_K] --> C1[C₁]
+    C1 --> X2((⊕))
+    P2[P₂] --> X2
+    X2 --> E2[AES_K] --> C2[C₂]
+    C2 --> X3((⊕))
+    P3[P₃] --> X3
+    X3 --> E3[AES_K] --> C3[C₃]
+
+    style IV fill:#7c4dff,color:#fff
+    style E1 fill:#1565c0,color:#fff
+    style E2 fill:#1565c0,color:#fff
+    style E3 fill:#1565c0,color:#fff
 ```
 
 **Initialization Vector (IV):**
@@ -314,16 +329,24 @@ C₃ → [D_K] → ⊕ C₂ → P₃
 
 Encrypt a **counter** value, then XOR with plaintext.
 
-```
-[E_K(nonce || 1)] ⊕ P₁ → C₁
-[E_K(nonce || 2)] ⊕ P₂ → C₂
-[E_K(nonce || 3)] ⊕ P₃ → C₃
+```mermaid
+flowchart LR
+    N1["Nonce ∥ 1"] --> E1[AES_K]
+    N2["Nonce ∥ 2"] --> E2[AES_K]
+    N3["Nonce ∥ 3"] --> E3[AES_K]
+    E1 --> X1((⊕)) --> C1[C₁]
+    E2 --> X2((⊕)) --> C2[C₂]
+    E3 --> X3((⊕)) --> C3[C₃]
+    P1[P₁] --> X1
+    P2[P₂] --> X2
+    P3[P₃] --> X3
+    style E1 fill:#00897b,color:#fff
+    style E2 fill:#00897b,color:#fff
+    style E3 fill:#00897b,color:#fff
 ```
 
 **Nonce:** Number used once (like IV)  
 **Counter:** Increments for each block
-
----
 
 ### Security
 
@@ -345,15 +368,17 @@ Encrypt a **counter** value, then XOR with plaintext.
 
 **CTR mode** + **authentication tag** (AEAD: Authenticated Encryption with Associated Data)
 
+```mermaid
+flowchart LR
+    A[Plaintext] --> B[CTR Encryption]
+    B --> C[Ciphertext]
+    C --> D[GHASH]
+    AD[Additional Data] --> D
+    D --> E[Auth Tag]
+    B --> F([Ciphertext + Tag])
+    E --> F
+    style F fill:#00897b,color:#fff
 ```
-Encryption: CTR mode
-Authentication: GHASH (Galois field multiplication)
-Output: Ciphertext + Authentication Tag
-```
-
----
-
-### Security
 
 **Advantages:**
 - **Authenticated encryption** (detects tampering)
@@ -361,7 +386,7 @@ Output: Ciphertext + Authentication Tag
 - **Fast** (hardware support)
 - **AEAD** - can authenticate additional data without encrypting it
 
-**Most recommended mode for new applications**
+!!! success "Most recommended mode for new applications"
 
 ---
 
@@ -372,8 +397,6 @@ Output: Ciphertext + Authentication Tag
 Messages often aren't exact multiples of block size (16 bytes for AES).
 
 **Solution:** Add padding to the last block.
-
----
 
 ### PKCS#7 Padding
 
@@ -444,10 +467,9 @@ Every key is equally strong.
 
 ### IV/Nonce Reuse
 
-**CRITICAL:** Never reuse IV/nonce with same key
-
-- CBC: Predictable IV is vulnerable
-- CTR/GCM: Reused nonce completely breaks security
+!!! danger "CRITICAL: Never reuse IV/nonce with same key"
+    - CBC: Predictable IV is vulnerable
+    - CTR/GCM: Reused nonce completely breaks security
 
 ---
 
@@ -460,7 +482,3 @@ Every key is equally strong.
 5. **Galois Fields GF(2⁸)** enable AES mathematics
 6. **IV/nonce must never repeat** with same key
 7. **Use hardware AES** when available (AES-NI)
-
----
-
-[[../03-Classical-Ciphers/classical-ciphers|← Classical Ciphers]] | [Next: Hash Functions →]

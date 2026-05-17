@@ -11,11 +11,18 @@ In **public key cryptography**, there are **two keys**:
 
 ### How It Works
 
-**Scenario:** Alice wants to send Bob a secret message.
+```mermaid
+sequenceDiagram
+    participant A as Alice (Sender)
+    participant B as Bob (Receiver)
 
-1. Bob publishes his **public key**
-2. Alice **encrypts** with Bob's public key
-3. Bob **decrypts** with his **private key**
+    Note over B: Generates key pair
+    B-->>A: Publishes public key (e, n)
+    Note over A: Encrypts with Bob's public key
+    A->>B: Sends ciphertext C = Mᵉ mod n
+    Note over B: Decrypts with private key (d, n)
+    B->>B: Recovers M = Cᵈ mod n
+```
 
 > **Key insight:** Anyone can encrypt, but only Bob can decrypt!
 
@@ -25,7 +32,7 @@ In **public key cryptography**, there are **two keys**:
 
 **Problem with symmetric crypto:** How do you share the secret key securely?
 
-**RSA solution:** 
+**RSA solution:**
 - Encryption key is **public** (anyone can encrypt)
 - Decryption key is **private** (only recipient can decrypt)
 - Keys are mathematically related but **computationally hard** to derive one from the other
@@ -33,6 +40,19 @@ In **public key cryptography**, there are **two keys**:
 ---
 
 ## RSA Key Generation
+
+```mermaid
+flowchart TD
+    A([Start]) --> B["Choose large primes p, q"]
+    B --> C["Compute n = p × q\n(modulus)"]
+    C --> D["Compute φ(n) = (p−1)(q−1)"]
+    D --> E["Choose e where\ngcd(e, φ(n)) = 1\ncommonly e = 65537"]
+    E --> F["Compute d = e⁻¹ mod φ(n)\nvia Extended Euclidean"]
+    F --> G(["Public key: (e, n)\nPrivate key: (d, n)"])
+
+    style A fill:#7c4dff,color:#fff
+    style G fill:#00897b,color:#fff
+```
 
 ### Step 1: Choose Two Large Primes
 
@@ -344,7 +364,3 @@ Measure how long decryption takes to learn about private key.
 4. **Primality testing** uses probabilistic algorithms (Miller-Rabin)
 5. **Never use textbook RSA** - always use padding (OAEP)
 6. **Key size matters** - minimum 2048 bits
-
----
-
-[[../01-Foundations/modular-arithmetic|← Modular Arithmetic]] | [Next: Digital Signatures →]
