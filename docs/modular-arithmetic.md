@@ -1,7 +1,7 @@
 # Modular Arithmetic & GCD
 
 ## Greatest Common Divisor (GCD)
-##### (This is extremely important and will quite never leave you in this course lol)
+#### (This is extremely important)
 
 ### Definition
 
@@ -14,6 +14,7 @@ The **greatest common divisor (GCD)** of two integers $a$ and $b$ is the largest
 $$\gcd(29, 8)$$
 
 **Finding factors:**
+
 - Factors of 29: 1, 29
 - Factors of 8: 1, 2, 4, 8
 - Common factors: 1
