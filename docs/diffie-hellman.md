@@ -398,7 +398,7 @@ sequenceDiagram
     Note over C: Derives session keys from ECDH
 
     C->>S: Finished
-    Note over C,S: Encrypted communication begins 🔒
+    Note over C,S: Encrypted communication begins 
 ```
 
 ---

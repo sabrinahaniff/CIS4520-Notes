@@ -23,3 +23,7 @@
 
 ### 7️ Key Exchange
 - [Diffie-Hellman & Key Exchange](diffie-hellman.md)
+
+### Github Pages 
+- https://sabrinahaniff.github.io/CIS4520-Notes/
+

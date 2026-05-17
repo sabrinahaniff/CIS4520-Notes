@@ -3,6 +3,7 @@
 ## Why Matrices in Crypto?
 
 Matrices are used to:
+
 - **Mix information** in a structured way
 - **Hide patterns** in data
 - **Build ciphers** (e.g., Hill cipher)
@@ -10,7 +11,7 @@ Matrices are used to:
 
 **Think of a matrix as a table of numbers used to store and combine equations.**
 
-**Key insight:** Matrices let us represent multiple equations at once, solve them, and check whether solutions exist.
+**Key insight:** Matrices let us represent multiple equations at once, solve them, and check whether solutions exist - making them essential for encryption and decryption.
 
 ---
 
@@ -42,7 +43,7 @@ $$A = \begin{bmatrix} 1 & 5 & 7 \\ 2 & -3 & 4 \\ 0 & 6 & -2 \end{bmatrix}$$
 
 This is a $3 \times 3$ square matrix.
 
-**Why they matter:** Square matrices are the only matrices that can have inverses, which is crucial for encryption/decryption.
+**Why they matter:** Square matrices are the only matrices that can have inverses - which is crucial for encryption/decryption.
 
 ---
 
