@@ -9,6 +9,7 @@
 **Without meeting in person, how can Alice and Bob agree on a secret key when Eve is listening?**
 
 **Traditional approach:**
+
 - Meet in person
 - Trusted courier
 - Pre-shared keys
@@ -26,6 +27,7 @@
 **Idea:** Two parties can create a shared secret without ever transmitting it.
 
 **Analogy:** Color mixing
+
 - Alice has secret color (red)
 - Bob has secret color (blue)
 - They exchange mixed colors publicly
@@ -38,6 +40,7 @@
 ### Setup (Public Parameters)
 
 **Everyone agrees on:**
+
 - Large prime $p$
 - Generator $g$ (primitive root modulo $p$)
 
@@ -54,7 +57,7 @@ sequenceDiagram
     participant E as Eve (passive attacker)
 
     Note over A,B: Publicly agree on prime p and generator g
-    Note over E: Eve sees p and g — that's fine
+    Note over E: Eve sees p and g - that's fine
 
     A->>A: Choose secret a
     A->>A: Compute A = gᵃ mod p
@@ -63,12 +66,12 @@ sequenceDiagram
 
     A->>B: Send A (public)
     B->>A: Send B (public)
-    Note over E: Eve sees A and B — still can't compute key!
+    Note over E: Eve sees A and B - still can't compute key!
 
     A->>A: Key K = Bᵃ mod p = gᵃᵇ mod p
     B->>B: Key K = Aᵇ mod p = gᵃᵇ mod p
 
-    Note over A,B: Both now share K = gᵃᵇ mod p 🎉
+    Note over A,B: Both now share K = gᵃᵇ mod p!
 ```
 
 **Alice computes:**
@@ -84,23 +87,28 @@ $$K = A^b \bmod p = (g^a)^b = g^{ab} \bmod p$$
 ### Example
 
 **Public parameters:**
+
 - $p = 23$ (prime)
 - $g = 5$ (generator)
 
 **Alice:**
+
 - Secret: $a = 6$
 - Compute: $A = 5^6 \bmod 23 = 8$
 - Send: $A = 8$
 
 **Bob:**
+
 - Secret: $b = 15$
 - Compute: $B = 5^{15} \bmod 23 = 8$
 - Send: $B = 8$
 
 **Alice computes shared secret:**
+
 $$K = B^a = 8^6 \bmod 23 = 2$$
 
 **Bob computes shared secret:**
+
 $$K = A^b = 8^{15} \bmod 23 = 2$$
 
 **Shared secret:** $K = 2$ ✓
@@ -112,6 +120,7 @@ $$K = A^b = 8^{15} \bmod 23 = 2$$
 ### The Hard Problem: Discrete Logarithm
 
 **Given:**
+
 - $p, g, A = g^a \bmod p$
 
 **Find:** $a$
@@ -147,11 +156,13 @@ Uses modular arithmetic over prime $p$.
 Uses elliptic curve points instead of modular exponentiation.
 
 **Advantages:**
+
 - **Smaller keys** (256-bit ECDH ≈ 3072-bit DH)
 - **Faster** computations
 - **Same security level**
 
 **Protocol:**
+
 - Alice: $A = aG$ (scalar multiplication)
 - Bob: $B = bG$
 - Shared: $K = aB = bA = abG$
@@ -165,6 +176,7 @@ Uses elliptic curve points instead of modular exponentiation.
 **Problem:** Quantum computers can break DH!
 
 **Solutions:**
+
 - Lattice-based (e.g., Kyber)
 - Code-based
 - Hash-based
@@ -184,7 +196,7 @@ sequenceDiagram
     participant B as Bob
 
     A->>D: Send A = gᵃ
-    Note over D: Intercepts — never forwards!
+    Note over D: Intercepts - never forwards!
     D->>B: Send A' = gᵈ (Darth's own value)
     B->>D: Send B = gᵇ
     D->>A: Send B' = gᵈ (Darth's own value)
@@ -269,6 +281,7 @@ sequenceDiagram
 $$s = C_1^x = (g^k)^x = g^{kx} = (g^x)^k = y^k \bmod p$$
 
 Therefore:
+
 $$M = C_2 \cdot s^{-1} = M \cdot y^k \cdot (y^k)^{-1} = M$$
 
 ---
@@ -276,11 +289,13 @@ $$M = C_2 \cdot s^{-1} = M \cdot y^k \cdot (y^k)^{-1} = M$$
 ### Example
 
 **Bob's keys:**
+
 - $p = 23, g = 5$
 - Private: $x = 6$
 - Public: $y = 5^6 \bmod 23 = 8$
 
 **Alice encrypts $M = 12$:**
+
 - Choose $k = 3$
 - $C_1 = 5^3 \bmod 23 = 10$
 - $C_2 = 12 \cdot 8^3 \bmod 23 = 12 \cdot 512 \bmod 23 = 6144 \bmod 23 = 6$
@@ -288,6 +303,7 @@ $$M = C_2 \cdot s^{-1} = M \cdot y^k \cdot (y^k)^{-1} = M$$
 **Ciphertext:** $(10, 6)$
 
 **Bob decrypts:**
+
 - $s = 10^6 \bmod 23 = 18$
 - $s^{-1} = 18^{-1} \bmod 23 = 9$
 - $M = 6 \cdot 9 \bmod 23 = 54 \bmod 23 = 12$ ✓
@@ -301,10 +317,12 @@ $$M = C_2 \cdot s^{-1} = M \cdot y^k \cdot (y^k)^{-1} = M$$
 **Forward secrecy** (Perfect Forward Secrecy - PFS): Compromising long-term keys doesn't compromise past sessions.
 
 **Without PFS:**
+
 - If private key is stolen, attacker can decrypt **all past traffic**
 - Recorded ciphertext becomes vulnerable
 
 **With PFS:**
+
 - Each session uses **ephemeral keys** (temporary)
 - Session keys are destroyed after use
 - Past sessions remain secure even if long-term key is compromised
@@ -320,6 +338,7 @@ $$M = C_2 \cdot s^{-1} = M \cdot y^k \cdot (y^k)^{-1} = M$$
 3. Destroy ephemeral keys after session
 
 **TLS with ECDHE:**
+
 - Each HTTPS connection uses new ECDH keys
 - Old sessions can't be decrypted even if server key leaks
 
@@ -332,6 +351,7 @@ $$M = C_2 \cdot s^{-1} = M \cdot y^k \cdot (y^k)^{-1} = M$$
 ### The Problem
 
 Raw Diffie-Hellman output isn't suitable as an encryption key:
+
 - May have patterns
 - Not uniformly distributed
 - Wrong size
@@ -361,6 +381,7 @@ Raw Diffie-Hellman output isn't suitable as an encryption key:
 Combine **key exchange** with **authentication**.
 
 **Requirements:**
+
 - Establish shared secret
 - Authenticate both parties
 - Resist man-in-the-middle attacks
@@ -408,11 +429,13 @@ sequenceDiagram
 ### Choosing Parameters
 
 **Finite Field DH:**
+
 - **p:** 2048-bit minimum, 3072-bit recommended
 - **g:** Standard generator (often 2 or 5)
 - Use standardized groups (RFC 3526)
 
 **Elliptic Curve DH:**
+
 - **Curve25519** (most common)
 - **P-256** (NIST curve)
 - **P-384** (higher security)
@@ -437,11 +460,13 @@ sequenceDiagram
 ### Common Implementations
 
 **Libraries:**
+
 - OpenSSL (supports DH, ECDH)
 - libsodium (Curve25519)
 - BoringSSL (Google's fork)
 
 **Protocols:**
+
 - TLS 1.3 (ECDHE mandatory)
 - SSH (supports multiple methods)
 - IPsec/IKE (DH groups)
