@@ -1,4 +1,4 @@
-# CIS*4520: Cryptography Notes
+# CIS*4520: Introduction to Cryptography
 
 ## Table of Contents
 

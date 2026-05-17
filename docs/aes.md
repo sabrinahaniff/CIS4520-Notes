@@ -8,9 +8,9 @@ A **block cipher** encrypts data in **fixed-size blocks** (e.g., 128 bits at a t
 
 ### Key Properties
 
-1. **Deterministic** - same plaintext block → same ciphertext block (with same key)
-2. **Reversible** - encryption and decryption are inverse operations
-3. **Confusion & Diffusion** - Claude Shannon's principles
+1. **Deterministic**: same plaintext block → same ciphertext block (with same key)
+2. **Reversible**: encryption and decryption are inverse operations
+3. **Confusion & Diffusion**: Claude Shannon's principles
 
 ---
 
@@ -25,6 +25,7 @@ A **block cipher** encrypts data in **fixed-size blocks** (e.g., 128 bits at a t
 - **Rounds:** 10, 12, or 14 (depending on key size)
 
 **History:**
+
 - Replaced DES in 2001
 - Winner of NIST competition
 - Original name: Rijndael
@@ -88,11 +89,13 @@ Replace each byte with another byte from the **S-box** (substitution box).
 $$s'_{i,j} = \text{S-box}[s_{i,j}]$$
 
 **Example:**
+
 - Input byte: `0x53`
 - S-box lookup: `0xED`
 - Output byte: `0xED`
 
 **S-box properties:**
+
 - Non-linear (based on multiplicative inverse in GF(2⁸))
 - Designed to resist differential and linear cryptanalysis
 
@@ -101,6 +104,7 @@ $$s'_{i,j} = \text{S-box}[s_{i,j}]$$
 ### 2. ShiftRows (Diffusion)
 
 Cyclically shift the rows of the state:
+
 - **Row 0:** No shift
 - **Row 1:** Shift left by 1
 - **Row 2:** Shift left by 2
@@ -147,6 +151,7 @@ $$s'_{i,j} = s_{i,j} \oplus k_{i,j}$$
 ### Why Galois Fields?
 
 AES does math on **bytes** (8-bit chunks). But AES needs to:
+
 - **Multiply bytes** (for MixColumns)
 - **Find inverses** (for S-box)
 
@@ -157,6 +162,7 @@ Regular arithmetic doesn't work well for cryptography. **Galois Fields** provide
 ### GF(2⁸) Basics
 
 Elements of GF(2⁸):
+
 - All 8-bit values: `0x00` to `0xFF`
 - Represented as polynomials of degree < 8
 
@@ -192,7 +198,8 @@ Multiply polynomials, then **reduce modulo** an irreducible polynomial.
 2. Reduce mod $m(x)$
 3. Result (in GF(2⁸))
 
-**Special case — multiply by 2:**
+**Special case: multiply by 2:**
+
 - If MSB = 0: left shift
 - If MSB = 1: left shift, then XOR with `0x1B`
 
@@ -203,12 +210,15 @@ Multiply polynomials, then **reduce modulo** an irreducible polynomial.
 AES takes **one original key** and expands it into multiple **round keys**.
 
 **For AES-128:**
+
 - Original key: 128 bits (16 bytes)
 - Need: 11 round keys (176 bytes total)
 
 **Process:**
+
 1. Copy original key as first 4 words
 2. Generate new words using:
+
    - **RotWord** - circular byte rotation
    - **SubWord** - S-box substitution
    - **Rcon** - round constant XOR
@@ -232,6 +242,7 @@ AES takes **one original key** and expands it into multiple **round keys**.
 ### The Problem
 
 A block cipher like AES encrypts **one fixed-size block** at a time. But real messages:
+
 - Are longer than one block
 - Might not be a multiple of block size
 
@@ -265,7 +276,7 @@ flowchart LR
 
     **Attack:** Patterns in plaintext are visible in ciphertext
 
-    **Famous example:** ECB penguin image — encrypted but still recognizable!
+    **Famous example:** ECB penguin image: encrypted but still recognizable!
 
 ---
 
@@ -294,6 +305,7 @@ flowchart LR
 ```
 
 **Initialization Vector (IV):**
+
 - Random value for first block
 - Must be unpredictable
 - Transmitted with ciphertext (can be public)
@@ -313,10 +325,12 @@ C₃ → [D_K] → ⊕ C₂ → P₃
 ### Security
 
 **Good:**
+
 - Identical plaintexts → different ciphertexts (if IV is random)
 - Self-synchronizing
 
 **Issues:**
+
 - **Not parallelizable** for encryption
 - **Padding oracle attacks** possible
 - **IV must be unpredictable** (not just unique)
@@ -351,12 +365,14 @@ flowchart LR
 ### Security
 
 **Advantages:**
+
 - **Parallelizable** (both encryption and decryption)
 - No padding needed
 - Random access to blocks
 - Turns block cipher into stream cipher
 
 **Requirements:**
+
 - **Never reuse nonce** with same key
 - Counter must not repeat
 
@@ -381,6 +397,7 @@ flowchart LR
 ```
 
 **Advantages:**
+
 - **Authenticated encryption** (detects tampering)
 - **Parallelizable**
 - **Fast** (hardware support)
@@ -410,6 +427,7 @@ Need full block: 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
 ```
 
 **Why this works:**
+
 - Always unambiguous
 - Last byte tells you how much padding to remove
 
@@ -439,10 +457,12 @@ Need full block: 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
 ### Known Attacks
 
 **Brute force:**
+
 - AES-128: 2¹²⁸ operations (infeasible)
 - AES-256: 2²⁵⁶ operations (quantum computers might reduce to 2¹²⁸)
 
 **Theoretical attacks:**
+
 - Slightly faster than brute force
 - Still completely impractical
 - Don't affect real-world security
