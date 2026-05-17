@@ -3,6 +3,7 @@
 ## Introduction
 
 **Classical cryptography** refers to encryption methods used before computers. These ciphers are:
+
 - **Symmetric** (same key for encryption and decryption)
 - **Character-based** (operate on letters, not bits)
 - **Historically important** but mostly **insecure today**
@@ -22,6 +23,7 @@
 $$C = (P + K) \bmod 26$$
 
 where:
+
 - $C$ = ciphertext letter position
 - $P$ = plaintext letter position
 - $K$ = key (shift amount)
@@ -40,6 +42,7 @@ Shift the ciphertext letter **backward** by $K$ positions.
 **Key:** $K = 3$
 
 **Encryption:**
+
 - H (7) → (7 + 3) mod 26 = 10 → K
 - E (4) → (4 + 3) mod 26 = 7 → H
 - L (11) → (11 + 3) mod 26 = 14 → O
@@ -73,6 +76,7 @@ Each letter of the key determines the shift for the corresponding plaintext lett
 $$C_i = (P_i + K_i) \bmod 26$$
 
 where:
+
 - $K_i$ = key letter at position $i$ (repeats cyclically)
 
 ### Example
@@ -94,9 +98,9 @@ where:
 
 **More secure than Caesar, but still breakable:**
 
-1. **Kasiski examination** - find repeated patterns to determine key length
-2. **Frequency analysis** - once key length is known, break each Caesar cipher separately
-3. **Index of coincidence** - statistical method to find key length
+1. **Kasiski examination**: find repeated patterns to determine key length
+2. **Frequency analysis**: once key length is known, break each Caesar cipher separately
+3. **Index of coincidence**: statistical method to find key length
 
 ---
 
@@ -127,8 +131,9 @@ Q W E R T Y U I O P A S D F G H J K L Z X C V B N M
 **Key space:** $26!$ ≈ $4 \times 10^{26}$ (huge!)
 
 **But still vulnerable to:**
-- **Frequency analysis** - 'E' is most common, 'TH' is common bigram
-- **Pattern analysis** - double letters (LL, SS) reveal structure
+
+- **Frequency analysis**: 'E' is most common, 'TH' is common bigram
+- **Pattern analysis**: double letters (LL, SS) reveal structure
 - **Known plaintext attacks**
 
 ---
@@ -138,6 +143,7 @@ Q W E R T Y U I O P A S D F G H J K L Z X C V B N M
 ### How It Works
 
 Use a **random key** that is:
+
 - As long as the message
 - Used only once
 - Truly random
@@ -155,11 +161,13 @@ $$C = P \oplus K$$
 **Perfectly secure!** (Shannon proved this)
 
 **Why it's perfect:**
+
 - Every ciphertext is equally likely
 - No frequency analysis possible
 - No patterns to exploit
 
 **Why we don't use it:**
+
 - Key must be as long as the message
 - Key must be truly random
 - Key can only be used once
@@ -201,6 +209,7 @@ H . . . O . . . L .
 ### Security
 
 **Very weak:**
+
 - Only a few possible configurations
 - Easy to recognize zigzag patterns
 - Provides almost no security
@@ -240,10 +249,12 @@ Encrypt **pairs of letters** (digraphs):
 ### Security
 
 **Stronger than simple substitution:**
+
 - Operates on digraphs (26² = 676 possibilities)
 - Frequency analysis is harder
 
 **Still breakable:**
+
 - Digraph frequency analysis
 - Common pairs: TH, HE, AN
 
@@ -262,6 +273,7 @@ Uses **matrix multiplication** modulo 26.
 $$C = KP \bmod 26$$
 
 where:
+
 - $K$ = key matrix
 - $P$ = plaintext vector
 - $C$ = ciphertext vector
@@ -284,6 +296,7 @@ $$C = \begin{bmatrix} 3 & 3 \\ 2 & 5 \end{bmatrix} \begin{bmatrix} 7 \\ 4 \end{b
 $$P = K^{-1}C \bmod 26$$
 
 **Requirements:**
+
 - $\det(K) \neq 0 \bmod 26$
 - $\gcd(\det(K), 26) = 1$
 
@@ -292,11 +305,13 @@ $$P = K^{-1}C \bmod 26$$
 ### Security
 
 **Stronger against frequency analysis:**
+
 - Operates on blocks
 - Diffusion through matrix multiplication
 
 **Vulnerable to:**
-- **Known plaintext attack** - if you know $P$ and $C$, can solve for $K$
+
+- **Known plaintext attack**: if you know $P$ and $C$, can solve for $K$
 - Requires chosen plaintext to break completely
 
 ---
@@ -343,11 +358,13 @@ Modern cryptography learned from classical failures:
 > **The security should rely on the key, not on keeping the algorithm secret.**
 
 **Why this matters:**
+
 - Algorithms get reverse-engineered
 - "Security through obscurity" always fails
 - Public algorithms get more scrutiny and testing
 
 **Modern application:**
+
 - AES algorithm is public
 - RSA algorithm is public
 - Security relies entirely on key secrecy

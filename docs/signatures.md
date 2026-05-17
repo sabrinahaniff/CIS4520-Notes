@@ -29,9 +29,9 @@ sequenceDiagram
     B->>B: Check h == h'?
 
     alt Signatures match
-        Note over B: ✅ Valid — message is authentic and unmodified
+        Note over B: Valid! message is authentic and unmodified
     else Signatures don't match
-        Note over B: ❌ Invalid — message was tampered or wrong sender
+        Note over B: Invalid! message was tampered or wrong sender
     end
 ```
 
@@ -329,10 +329,10 @@ A **certificate** binds a public key to an identity.
 
 ```mermaid
 flowchart TD
-    R(["🏛️ Root CA\n(self-signed, pre-installed\nin browsers & OS)"])
-    I["🏢 Intermediate CA\n(signed by Root CA)"]
-    W["🌐 Website Certificate\ne.g. google.com\n(signed by Intermediate CA)"]
-    B["🧑 Browser / User"]
+    R([" Root CA\n(self-signed, pre-installed\nin browsers & OS)"])
+    I[" Intermediate CA\n(signed by Root CA)"]
+    W[" Website Certificate\ne.g. google.com\n(signed by Intermediate CA)"]
+    B[" Browser / User"]
 
     R -->|"Signs"| I
     I -->|"Signs"| W
