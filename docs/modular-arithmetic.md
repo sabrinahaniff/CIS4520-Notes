@@ -1,6 +1,7 @@
 # Modular Arithmetic & GCD
 
 ## Greatest Common Divisor (GCD)
+##### (This is extremely important and will quite never leave you in this course lol)
 
 ### Definition
 

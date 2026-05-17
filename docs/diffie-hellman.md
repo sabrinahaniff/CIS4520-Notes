@@ -13,7 +13,7 @@
 - Trusted courier
 - Pre-shared keys
 
-**These don't scale!**
+**But these don't scale!**
 
 ---
 
@@ -116,7 +116,7 @@ $$K = A^b = 8^{15} \bmod 23 = 2$$
 
 **Find:** $a$
 
-This is the **discrete logarithm problem** - computationally hard for large $p$.
+This is the **discrete logarithm problem**: computationally hard for large $p$.
 
 **Eve sees:** $p, g, A, B$  
 **Eve needs:** $a$ or $b$ to compute $K$  
