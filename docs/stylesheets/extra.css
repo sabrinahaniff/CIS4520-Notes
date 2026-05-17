@@ -1,0 +1,59 @@
+/* Typography & spacing */
+.md-typeset h1 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.md-typeset h2 {
+  font-weight: 600;
+  border-bottom: 2px solid var(--md-primary-fg-color--light);
+  padding-bottom: 0.3em;
+}
+
+/* Wider content area */
+.md-grid {
+  max-width: 1400px;
+}
+
+/* Admonition custom styles */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ── Code blocks ── */
+.md-typeset pre > code {
+  border-radius: 8px;
+  font-size: 0.85em;
+}
+
+/* Tables */
+.md-typeset table:not([class]) {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-primary-fg-color);
+  color: white;
+  font-weight: 600;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1.5em 0;
+}
+
+/*  Nav tabs */
+.md-tabs__link {
+  font-weight: 500;
+}
+
+/* Subtle card effect on content */
+.md-content__inner {
+  padding: 1.5rem 2rem;
+}
