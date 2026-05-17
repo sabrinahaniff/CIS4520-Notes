@@ -1,29 +1,32 @@
 # CIS*4520: Introduction to Cryptography
 
-## Table of Contents
+Free, open-source study notes for CIS*4520 at the University of Guelph. Covers all major course topics with diagrams, worked examples, and quick reference tables.
 
-### 1️ Foundations
-- [Matrix Algebra in Cryptography](matrix-algebra.md)
-- [Modular Arithmetic & GCD](modular-arithmetic.md)
+> Notes by **Sabrina Haniff**: feel free to use, share, and contribute.
 
-### 2️ Public Key Cryptography
-- [RSA Encryption](rsa.md)
+---
 
-### 3️ Classical Cryptography
-- [Classical Ciphers](classical-ciphers.md)
+## What's Covered
 
-### 4️ Symmetric Cryptography
-- [AES & Block Cipher Modes](aes.md)
+| Topic | Description |
+|-------|-------------|
+| [Matrix Algebra](matrix-algebra.md) | Matrix operations, inverses, and the Hill cipher |
+| [Modular Arithmetic & GCD](modular-arithmetic.md) | Euclidean algorithm, modular inverse, fast exponentiation |
+| [Classical Ciphers](classical-ciphers.md) | Caesar, Vigenère, Substitution, OTP, Playfair, Hill, Rail Fence |
+| [AES & Block Cipher Modes](aes.md) | AES structure, GF(2⁸), ECB, CBC, CTR, GCM |
+| [RSA Encryption](rsa.md) | Key generation, encryption/decryption, Miller-Rabin, OAEP |
+| [Diffie-Hellman](diffie-hellman.md) | DH protocol, ECDH, MITM attacks, forward secrecy, TLS |
+| [Hash Functions](hash-functions.md) | MD5, SHA family, birthday attacks, HMAC, Argon2 |
+| [Digital Signatures](signatures.md) | RSA signatures, DSA, ECDSA, PSS padding, PKI, chain of trust |
 
-### 5️ Hash Functions
-- [Cryptographic Hash Functions](hash-functions.md)
+---
 
-### 6️ Digital Signatures
-- [Digital Signatures & PKI](signatures.md)
+## How to Use These Notes
 
-### 7️ Key Exchange
-- [Diffie-Hellman & Key Exchange](diffie-hellman.md)
+Use the **navigation tabs** at the top to jump between topics, or the **search bar** to find anything specific. Each page has a table of contents on the right side.
 
-### Github Pages 
-- https://sabrinahaniff.github.io/CIS4520-Notes/
+---
 
+## Contributing
+
+Found a mistake or want to add something? PRs are welcome on [GitHub](https://github.com/sabrinahaniff/CIS4520-Notes).
