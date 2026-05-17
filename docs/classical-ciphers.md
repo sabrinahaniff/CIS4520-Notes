@@ -304,21 +304,24 @@ $$P = K^{-1}C \bmod 26$$
 ## Comparison of Classical Ciphers
 
 ```mermaid
-quadrantChart
-    title Classical Cipher Security vs Key Space
-    x-axis Small Key Space --> Large Key Space
-    y-axis Weak Security --> Strong Security
-    quadrant-1 Hard to break
-    quadrant-2 Theoretically strong
-    quadrant-3 Easy to break
-    quadrant-4 Large keys, still weak
-    Caesar: [0.05, 0.05]
-    Rail Fence: [0.08, 0.08]
-    Vigenere: [0.35, 0.25]
-    Substitution: [0.7, 0.2]
-    Playfair: [0.55, 0.45]
-    Hill: [0.75, 0.55]
-    OTP: [0.95, 0.95]
+flowchart LR
+    A["❌ Caesar\nBrute force in seconds"]
+    B["❌ Rail Fence\nPattern recognition"]
+    C["⚠️ Vigenère\nKasiski attack"]
+    D["⚠️ Substitution\nFrequency analysis"]
+    E["⚠️ Playfair\nDigraph frequency"]
+    F["⚠️ Hill\nKnown plaintext attack"]
+    G["✅ OTP\nPerfectly secure"]
+
+    A -->|"stronger"| B -->|"stronger"| C -->|"stronger"| D -->|"stronger"| E -->|"stronger"| F -->|"stronger"| G
+
+    style A fill:#ef5350,color:#fff
+    style B fill:#ef5350,color:#fff
+    style C fill:#f57c00,color:#fff
+    style D fill:#f57c00,color:#fff
+    style E fill:#f9a825,color:#fff
+    style F fill:#f9a825,color:#fff
+    style G fill:#2e7d32,color:#fff
 ```
 
 | Cipher | Key Space | Security | Speed | Notes |
