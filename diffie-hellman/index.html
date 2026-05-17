@@ -1,0 +1,2778 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cryptography notes from the University of Guelph">
+      
+      
+        <meta name="author" content="Sabrina Haniff">
+      
+      
+        <link rel="canonical" href="https://sabrinahaniff.github.io/CIS4520-Notes/diffie-hellman/">
+      
+      
+        <link rel="prev" href="../rsa/">
+      
+      
+        <link rel="next" href="../hash-functions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Diffie-Hellman & Key Exchange - CIS*4520 - Introduction to Cryptography</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#key-exchange-diffie-hellman" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="CIS*4520 - Introduction to Cryptography" class="md-header__button md-logo" aria-label="CIS*4520 - Introduction to Cryptography" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CIS*4520 - Introduction to Cryptography
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Diffie-Hellman & Key Exchange
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../matrix-algebra/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../classical-ciphers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Classical Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../aes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Symmetric Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../rsa/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Public Key Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../hash-functions/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hash Functions
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../signatures/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Digital Signatures
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CIS*4520 - Introduction to Cryptography" class="md-nav__button md-logo" aria-label="CIS*4520 - Introduction to Cryptography" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CIS*4520 - Introduction to Cryptography
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../matrix-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matrix Algebra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modular-arithmetic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modular Arithmetic & GCD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classical Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Classical Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classical-ciphers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classical Ciphers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Symmetric Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Symmetric Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AES & Block Cipher Modes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public Key Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public Key Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rsa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSA Encryption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diffie-Hellman & Key Exchange
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diffie-Hellman & Key Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-key-distribution-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Key Distribution Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Key Distribution Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Challenge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diffie-hellman-key-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diffie-Hellman Key Exchange
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Diffie-Hellman Key Exchange">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-breakthrough-1976" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Breakthrough (1976)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-diffie-hellman-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Diffie-Hellman Works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Diffie-Hellman Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-public-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup (Public Parameters)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-diffie-hellman-is-secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Diffie-Hellman is Secure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Diffie-Hellman is Secure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hard-problem-discrete-logarithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hard Problem: Discrete Logarithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computational-diffie-hellman-cdh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Computational Diffie-Hellman (CDH)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diffie-hellman-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diffie-Hellman Variants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Diffie-Hellman Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-finite-field-dh-original" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Finite Field DH (Original)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-elliptic-curve-dh-ecdh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Elliptic Curve DH (ECDH)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-post-quantum-key-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Post-Quantum Key Exchange
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#man-in-the-middle-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Man-in-the-Middle Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Man-in-the-Middle Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-vulnerability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Vulnerability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mitigation-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mitigation: Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#elgamal-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ElGamal Encryption
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ElGamal Encryption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forward-secrecy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forward Secrecy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Forward Secrecy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Concept
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ephemeral-diffie-hellman-dheecdhe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ephemeral Diffie-Hellman (DHE/ECDHE)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-derivation-functions-kdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Derivation Functions (KDF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Derivation Functions (KDF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hkdf-hmac-based-kdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HKDF (HMAC-based KDF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authenticated-key-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authenticated Key Exchange
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authenticated Key Exchange">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Goal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#station-to-station-sts-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Station-to-Station (STS) Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Handshake
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Considerations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#choosing-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Implementations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Best Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-ephemeral-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Use Ephemeral Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-authenticate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Authenticate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-use-kdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Use KDF
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-choose-strong-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Choose Strong Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-implement-constant-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Implement Constant-Time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-check-for-zerosmall-subgroups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Check for Zero/Small Subgroups
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attacks-on-diffie-hellman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attacks on Diffie-Hellman
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attacks on Diffie-Hellman">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-small-subgroup-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Small Subgroup Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-logjam-attack-2015" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Logjam Attack (2015)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-quantum-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Quantum Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hash Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../signatures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-key-distribution-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Key Distribution Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Key Distribution Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Challenge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diffie-hellman-key-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diffie-Hellman Key Exchange
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Diffie-Hellman Key Exchange">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-breakthrough-1976" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Breakthrough (1976)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-diffie-hellman-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Diffie-Hellman Works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Diffie-Hellman Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-public-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup (Public Parameters)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-diffie-hellman-is-secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Diffie-Hellman is Secure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Diffie-Hellman is Secure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hard-problem-discrete-logarithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hard Problem: Discrete Logarithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computational-diffie-hellman-cdh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Computational Diffie-Hellman (CDH)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diffie-hellman-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diffie-Hellman Variants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Diffie-Hellman Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-finite-field-dh-original" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Finite Field DH (Original)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-elliptic-curve-dh-ecdh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Elliptic Curve DH (ECDH)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-post-quantum-key-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Post-Quantum Key Exchange
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#man-in-the-middle-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Man-in-the-Middle Attack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Man-in-the-Middle Attack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-vulnerability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Vulnerability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mitigation-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mitigation: Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#elgamal-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ElGamal Encryption
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ElGamal Encryption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forward-secrecy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forward Secrecy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Forward Secrecy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Concept
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ephemeral-diffie-hellman-dheecdhe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ephemeral Diffie-Hellman (DHE/ECDHE)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-derivation-functions-kdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Derivation Functions (KDF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Derivation Functions (KDF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hkdf-hmac-based-kdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HKDF (HMAC-based KDF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authenticated-key-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authenticated Key Exchange
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authenticated Key Exchange">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Goal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#station-to-station-sts-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Station-to-Station (STS) Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Handshake
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Considerations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#choosing-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Implementations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Best Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-ephemeral-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Use Ephemeral Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-authenticate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Authenticate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-use-kdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Use KDF
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-choose-strong-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Choose Strong Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-implement-constant-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Implement Constant-Time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-check-for-zerosmall-subgroups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Check for Zero/Small Subgroups
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attacks-on-diffie-hellman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attacks on Diffie-Hellman
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attacks on Diffie-Hellman">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-small-subgroup-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Small Subgroup Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-logjam-attack-2015" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Logjam Attack (2015)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-quantum-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Quantum Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="key-exchange-diffie-hellman">Key Exchange &amp; Diffie-Hellman<a class="headerlink" href="#key-exchange-diffie-hellman" title="Permanent link">&para;</a></h1>
+<h2 id="the-key-distribution-problem">The Key Distribution Problem<a class="headerlink" href="#the-key-distribution-problem" title="Permanent link">&para;</a></h2>
+<h3 id="the-challenge">The Challenge<a class="headerlink" href="#the-challenge" title="Permanent link">&para;</a></h3>
+<p><strong>Question:</strong> How do two parties establish a shared secret key over an insecure channel?</p>
+<p><strong>Without meeting in person, how can Alice and Bob agree on a secret key when Eve is listening?</strong></p>
+<p><strong>Traditional approach:</strong></p>
+<ul>
+<li>Meet in person</li>
+<li>Trusted courier</li>
+<li>Pre-shared keys</li>
+</ul>
+<p><strong>But these don't scale!</strong></p>
+<hr />
+<h2 id="diffie-hellman-key-exchange">Diffie-Hellman Key Exchange<a class="headerlink" href="#diffie-hellman-key-exchange" title="Permanent link">&para;</a></h2>
+<h3 id="the-breakthrough-1976">The Breakthrough (1976)<a class="headerlink" href="#the-breakthrough-1976" title="Permanent link">&para;</a></h3>
+<p><strong>Whitfield Diffie</strong> and <strong>Martin Hellman</strong> solved the key distribution problem!</p>
+<p><strong>Idea:</strong> Two parties can create a shared secret without ever transmitting it.</p>
+<p><strong>Analogy:</strong> Color mixing</p>
+<ul>
+<li>Alice has secret color (red)</li>
+<li>Bob has secret color (blue)</li>
+<li>They exchange mixed colors publicly</li>
+<li>Each adds their secret → same final color!</li>
+</ul>
+<hr />
+<h2 id="how-diffie-hellman-works">How Diffie-Hellman Works<a class="headerlink" href="#how-diffie-hellman-works" title="Permanent link">&para;</a></h2>
+<h3 id="setup-public-parameters">Setup (Public Parameters)<a class="headerlink" href="#setup-public-parameters" title="Permanent link">&para;</a></h3>
+<p><strong>Everyone agrees on:</strong></p>
+<ul>
+<li>Large prime <span class="arithmatex">\(p\)</span></li>
+<li>Generator <span class="arithmatex">\(g\)</span> (primitive root modulo <span class="arithmatex">\(p\)</span>)</li>
+</ul>
+<p>These can be public and reused.</p>
+<hr />
+<h3 id="the-protocol">The Protocol<a class="headerlink" href="#the-protocol" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant A as Alice
+    participant B as Bob
+    participant E as Eve (passive attacker)
+
+    Note over A,B: Publicly agree on prime p and generator g
+    Note over E: Eve sees p and g - that's fine
+
+    A-&gt;&gt;A: Choose secret a
+    A-&gt;&gt;A: Compute A = gᵃ mod p
+    B-&gt;&gt;B: Choose secret b
+    B-&gt;&gt;B: Compute B = gᵇ mod p
+
+    A-&gt;&gt;B: Send A (public)
+    B-&gt;&gt;A: Send B (public)
+    Note over E: Eve sees A and B - still can't compute key!
+
+    A-&gt;&gt;A: Key K = Bᵃ mod p = gᵃᵇ mod p
+    B-&gt;&gt;B: Key K = Aᵇ mod p = gᵃᵇ mod p
+
+    Note over A,B: Both now share K = gᵃᵇ mod p!</code></pre>
+<p><strong>Alice computes:</strong>
+$<span class="arithmatex">\(K = B^a \bmod p = (g^b)^a = g^{ab} \bmod p\)</span>$</p>
+<p><strong>Bob computes:</strong>
+$<span class="arithmatex">\(K = A^b \bmod p = (g^a)^b = g^{ab} \bmod p\)</span>$</p>
+<p><strong>Result:</strong> Both have <span class="arithmatex">\(K = g^{ab} \bmod p\)</span> (the shared secret!)</p>
+<hr />
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<p><strong>Public parameters:</strong></p>
+<ul>
+<li><span class="arithmatex">\(p = 23\)</span> (prime)</li>
+<li><span class="arithmatex">\(g = 5\)</span> (generator)</li>
+</ul>
+<p><strong>Alice:</strong></p>
+<ul>
+<li>Secret: <span class="arithmatex">\(a = 6\)</span></li>
+<li>Compute: <span class="arithmatex">\(A = 5^6 \bmod 23 = 8\)</span></li>
+<li>Send: <span class="arithmatex">\(A = 8\)</span></li>
+</ul>
+<p><strong>Bob:</strong></p>
+<ul>
+<li>Secret: <span class="arithmatex">\(b = 15\)</span></li>
+<li>Compute: <span class="arithmatex">\(B = 5^{15} \bmod 23 = 8\)</span></li>
+<li>Send: <span class="arithmatex">\(B = 8\)</span></li>
+</ul>
+<p><strong>Alice computes shared secret:</strong></p>
+<div class="arithmatex">\[K = B^a = 8^6 \bmod 23 = 2\]</div>
+<p><strong>Bob computes shared secret:</strong></p>
+<div class="arithmatex">\[K = A^b = 8^{15} \bmod 23 = 2\]</div>
+<p><strong>Shared secret:</strong> <span class="arithmatex">\(K = 2\)</span> ✓</p>
+<hr />
+<h2 id="why-diffie-hellman-is-secure">Why Diffie-Hellman is Secure<a class="headerlink" href="#why-diffie-hellman-is-secure" title="Permanent link">&para;</a></h2>
+<h3 id="the-hard-problem-discrete-logarithm">The Hard Problem: Discrete Logarithm<a class="headerlink" href="#the-hard-problem-discrete-logarithm" title="Permanent link">&para;</a></h3>
+<p><strong>Given:</strong></p>
+<ul>
+<li><span class="arithmatex">\(p, g, A = g^a \bmod p\)</span></li>
+</ul>
+<p><strong>Find:</strong> <span class="arithmatex">\(a\)</span></p>
+<p>This is the <strong>discrete logarithm problem</strong>: computationally hard for large <span class="arithmatex">\(p\)</span>.</p>
+<p><strong>Eve sees:</strong> <span class="arithmatex">\(p, g, A, B\)</span><br />
+<strong>Eve needs:</strong> <span class="arithmatex">\(a\)</span> or <span class="arithmatex">\(b\)</span> to compute <span class="arithmatex">\(K\)</span><br />
+<strong>Problem:</strong> No efficient algorithm to find <span class="arithmatex">\(a\)</span> from <span class="arithmatex">\(g^a \bmod p\)</span></p>
+<hr />
+<h3 id="computational-diffie-hellman-cdh">Computational Diffie-Hellman (CDH)<a class="headerlink" href="#computational-diffie-hellman-cdh" title="Permanent link">&para;</a></h3>
+<p><strong>Even harder:</strong> Given <span class="arithmatex">\(g, g^a, g^b\)</span>, compute <span class="arithmatex">\(g^{ab}\)</span> without knowing <span class="arithmatex">\(a\)</span> or <span class="arithmatex">\(b\)</span>.</p>
+<p><strong>Security assumption:</strong> CDH is hard.</p>
+<hr />
+<h2 id="diffie-hellman-variants">Diffie-Hellman Variants<a class="headerlink" href="#diffie-hellman-variants" title="Permanent link">&para;</a></h2>
+<h3 id="1-finite-field-dh-original">1. Finite Field DH (Original)<a class="headerlink" href="#1-finite-field-dh-original" title="Permanent link">&para;</a></h3>
+<p>Uses modular arithmetic over prime <span class="arithmatex">\(p\)</span>.</p>
+<p><strong>Key sizes:</strong> 2048-3072 bits</p>
+<hr />
+<h3 id="2-elliptic-curve-dh-ecdh">2. Elliptic Curve DH (ECDH)<a class="headerlink" href="#2-elliptic-curve-dh-ecdh" title="Permanent link">&para;</a></h3>
+<p>Uses elliptic curve points instead of modular exponentiation.</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li><strong>Smaller keys</strong> (256-bit ECDH ≈ 3072-bit DH)</li>
+<li><strong>Faster</strong> computations</li>
+<li><strong>Same security level</strong></li>
+</ul>
+<p><strong>Protocol:</strong></p>
+<ul>
+<li>Alice: <span class="arithmatex">\(A = aG\)</span> (scalar multiplication)</li>
+<li>Bob: <span class="arithmatex">\(B = bG\)</span></li>
+<li>Shared: <span class="arithmatex">\(K = aB = bA = abG\)</span></li>
+</ul>
+<p><strong>Most common today:</strong> X25519 (Curve25519)</p>
+<hr />
+<h3 id="3-post-quantum-key-exchange">3. Post-Quantum Key Exchange<a class="headerlink" href="#3-post-quantum-key-exchange" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Quantum computers can break DH!</p>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>Lattice-based (e.g., Kyber)</li>
+<li>Code-based</li>
+<li>Hash-based</li>
+</ul>
+<hr />
+<h2 id="man-in-the-middle-attack">Man-in-the-Middle Attack<a class="headerlink" href="#man-in-the-middle-attack" title="Permanent link">&para;</a></h2>
+<h3 id="the-vulnerability">The Vulnerability<a class="headerlink" href="#the-vulnerability" title="Permanent link">&para;</a></h3>
+<p><strong>Diffie-Hellman provides no authentication!</strong></p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant A as Alice
+    participant D as Darth (MITM)
+    participant B as Bob
+
+    A-&gt;&gt;D: Send A = gᵃ
+    Note over D: Intercepts - never forwards!
+    D-&gt;&gt;B: Send A' = gᵈ (Darth's own value)
+    B-&gt;&gt;D: Send B = gᵇ
+    D-&gt;&gt;A: Send B' = gᵈ (Darth's own value)
+
+    Note over A,D: Alice and Darth share K₁ = gᵃᵈ
+    Note over D,B: Darth and Bob share K₂ = gᵇᵈ
+    Note over D: Darth decrypts, reads, re-encrypts all messages!</code></pre>
+<div class="admonition danger">
+<p class="admonition-title">Result</p>
+<p>Alice thinks she's talking to Bob. Bob thinks he's talking to Alice.
+Darth reads and modifies everything in between.</p>
+</div>
+<hr />
+<h3 id="mitigation-authentication">Mitigation: Authentication<a class="headerlink" href="#mitigation-authentication" title="Permanent link">&para;</a></h3>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Digital Signatures</strong></li>
+<li>Sign <span class="arithmatex">\(g^a\)</span> and <span class="arithmatex">\(g^b\)</span></li>
+<li>
+<p>Requires public keys</p>
+</li>
+<li>
+<p><strong>Pre-Shared Keys</strong></p>
+</li>
+<li>
+<p>Authenticate with existing key</p>
+</li>
+<li>
+<p><strong>Certificates</strong></p>
+</li>
+<li>
+<p>Use PKI to verify identities</p>
+</li>
+<li>
+<p><strong>Station-to-Station (STS) Protocol</strong></p>
+</li>
+<li>Combines DH with signatures</li>
+</ol>
+<hr />
+<h2 id="elgamal-encryption">ElGamal Encryption<a class="headerlink" href="#elgamal-encryption" title="Permanent link">&para;</a></h2>
+<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
+<p><strong>ElGamal</strong> uses Diffie-Hellman for <strong>encryption</strong> (not just key exchange).</p>
+<p><strong>Based on:</strong> DH key exchange idea</p>
+<hr />
+<h3 id="key-generation">Key Generation<a class="headerlink" href="#key-generation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Choose large prime <span class="arithmatex">\(p\)</span></li>
+<li>Choose generator <span class="arithmatex">\(g\)</span></li>
+<li>Choose private key <span class="arithmatex">\(x\)</span> (random, <span class="arithmatex">\(1 &lt; x &lt; p-1\)</span>)</li>
+<li>Compute public key <span class="arithmatex">\(y = g^x \bmod p\)</span></li>
+</ol>
+<p><strong>Public key:</strong> <span class="arithmatex">\((p, g, y)\)</span><br />
+<strong>Private key:</strong> <span class="arithmatex">\(x\)</span></p>
+<hr />
+<h3 id="encryption">Encryption<a class="headerlink" href="#encryption" title="Permanent link">&para;</a></h3>
+<p><strong>Alice encrypts message <span class="arithmatex">\(M\)</span> for Bob:</strong></p>
+<ol>
+<li>Get Bob's public key <span class="arithmatex">\((p, g, y)\)</span></li>
+<li>Choose random <span class="arithmatex">\(k\)</span> (ephemeral key, <span class="arithmatex">\(1 &lt; k &lt; p-1\)</span>)</li>
+<li>Compute:</li>
+<li><span class="arithmatex">\(C_1 = g^k \bmod p\)</span> (hint for Bob)</li>
+<li><span class="arithmatex">\(C_2 = M \cdot y^k \bmod p\)</span> (masked message)</li>
+</ol>
+<p><strong>Ciphertext:</strong> <span class="arithmatex">\((C_1, C_2)\)</span></p>
+<hr />
+<h3 id="decryption">Decryption<a class="headerlink" href="#decryption" title="Permanent link">&para;</a></h3>
+<p><strong>Bob decrypts using private key <span class="arithmatex">\(x\)</span>:</strong></p>
+<ol>
+<li>Compute <span class="arithmatex">\(s = C_1^x \bmod p\)</span></li>
+<li>Compute <span class="arithmatex">\(M = C_2 \cdot s^{-1} \bmod p\)</span></li>
+</ol>
+<hr />
+<h3 id="why-it-works">Why It Works<a class="headerlink" href="#why-it-works" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[s = C_1^x = (g^k)^x = g^{kx} = (g^x)^k = y^k \bmod p\]</div>
+<p>Therefore:</p>
+<div class="arithmatex">\[M = C_2 \cdot s^{-1} = M \cdot y^k \cdot (y^k)^{-1} = M\]</div>
+<hr />
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<p><strong>Bob's keys:</strong></p>
+<ul>
+<li><span class="arithmatex">\(p = 23, g = 5\)</span></li>
+<li>Private: <span class="arithmatex">\(x = 6\)</span></li>
+<li>Public: <span class="arithmatex">\(y = 5^6 \bmod 23 = 8\)</span></li>
+</ul>
+<p><strong>Alice encrypts <span class="arithmatex">\(M = 12\)</span>:</strong></p>
+<ul>
+<li>Choose <span class="arithmatex">\(k = 3\)</span></li>
+<li><span class="arithmatex">\(C_1 = 5^3 \bmod 23 = 10\)</span></li>
+<li><span class="arithmatex">\(C_2 = 12 \cdot 8^3 \bmod 23 = 12 \cdot 512 \bmod 23 = 6144 \bmod 23 = 6\)</span></li>
+</ul>
+<p><strong>Ciphertext:</strong> <span class="arithmatex">\((10, 6)\)</span></p>
+<p><strong>Bob decrypts:</strong></p>
+<ul>
+<li><span class="arithmatex">\(s = 10^6 \bmod 23 = 18\)</span></li>
+<li><span class="arithmatex">\(s^{-1} = 18^{-1} \bmod 23 = 9\)</span></li>
+<li><span class="arithmatex">\(M = 6 \cdot 9 \bmod 23 = 54 \bmod 23 = 12\)</span> ✓</li>
+</ul>
+<hr />
+<h2 id="forward-secrecy">Forward Secrecy<a class="headerlink" href="#forward-secrecy" title="Permanent link">&para;</a></h2>
+<h3 id="the-concept">The Concept<a class="headerlink" href="#the-concept" title="Permanent link">&para;</a></h3>
+<p><strong>Forward secrecy</strong> (Perfect Forward Secrecy - PFS): Compromising long-term keys doesn't compromise past sessions.</p>
+<p><strong>Without PFS:</strong></p>
+<ul>
+<li>If private key is stolen, attacker can decrypt <strong>all past traffic</strong></li>
+<li>Recorded ciphertext becomes vulnerable</li>
+</ul>
+<p><strong>With PFS:</strong></p>
+<ul>
+<li>Each session uses <strong>ephemeral keys</strong> (temporary)</li>
+<li>Session keys are destroyed after use</li>
+<li>Past sessions remain secure even if long-term key is compromised</li>
+</ul>
+<hr />
+<h3 id="ephemeral-diffie-hellman-dheecdhe">Ephemeral Diffie-Hellman (DHE/ECDHE)<a class="headerlink" href="#ephemeral-diffie-hellman-dheecdhe" title="Permanent link">&para;</a></h3>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Generate <strong>new DH keypair</strong> for each session</li>
+<li>Authenticate using long-term keys (certificates)</li>
+<li>Destroy ephemeral keys after session</li>
+</ol>
+<p><strong>TLS with ECDHE:</strong></p>
+<ul>
+<li>Each HTTPS connection uses new ECDH keys</li>
+<li>Old sessions can't be decrypted even if server key leaks</li>
+</ul>
+<p><strong>Standard practice:</strong> Modern TLS requires ECDHE</p>
+<hr />
+<h2 id="key-derivation-functions-kdf">Key Derivation Functions (KDF)<a class="headerlink" href="#key-derivation-functions-kdf" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h3>
+<p>Raw Diffie-Hellman output isn't suitable as an encryption key:</p>
+<ul>
+<li>May have patterns</li>
+<li>Not uniformly distributed</li>
+<li>Wrong size</li>
+</ul>
+<hr />
+<h3 id="hkdf-hmac-based-kdf">HKDF (HMAC-based KDF)<a class="headerlink" href="#hkdf-hmac-based-kdf" title="Permanent link">&para;</a></h3>
+<p><strong>Standard KDF</strong> for deriving keys from DH shared secret.</p>
+<p><strong>Two phases:</strong></p>
+<ol>
+<li>
+<p><strong>Extract:</strong> Create pseudo-random key (PRK)
+   $<span class="arithmatex">\(\text{PRK} = \text{HMAC}(\text{salt}, \text{DH-secret})\)</span>$</p>
+</li>
+<li>
+<p><strong>Expand:</strong> Generate output keys of desired length
+   $<span class="arithmatex">\(\text{Key} = \text{HMAC}(\text{PRK}, \text{info} || \text{counter})\)</span>$</p>
+</li>
+</ol>
+<p><strong>Result:</strong> Strong encryption keys from DH output</p>
+<hr />
+<h2 id="authenticated-key-exchange">Authenticated Key Exchange<a class="headerlink" href="#authenticated-key-exchange" title="Permanent link">&para;</a></h2>
+<h3 id="the-goal">The Goal<a class="headerlink" href="#the-goal" title="Permanent link">&para;</a></h3>
+<p>Combine <strong>key exchange</strong> with <strong>authentication</strong>.</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li>Establish shared secret</li>
+<li>Authenticate both parties</li>
+<li>Resist man-in-the-middle attacks</li>
+</ul>
+<hr />
+<h3 id="station-to-station-sts-protocol">Station-to-Station (STS) Protocol<a class="headerlink" href="#station-to-station-sts-protocol" title="Permanent link">&para;</a></h3>
+<p><strong>Combines DH with digital signatures:</strong></p>
+<ol>
+<li>Alice → Bob: <span class="arithmatex">\(g^a\)</span></li>
+<li>Bob → Alice: <span class="arithmatex">\(g^b\)</span>, <span class="arithmatex">\(\text{Sign}_B(g^a || g^b)\)</span></li>
+<li>Alice → Bob: <span class="arithmatex">\(\text{Sign}_A(g^a || g^b)\)</span></li>
+</ol>
+<p><strong>Key:</strong> <span class="arithmatex">\(K = g^{ab}\)</span></p>
+<p><strong>Security:</strong> Signatures prevent MITM</p>
+<hr />
+<h3 id="tls-handshake">TLS Handshake<a class="headerlink" href="#tls-handshake" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C-&gt;&gt;S: ClientHello (TLS version, cipher suites, ECDH public key)
+    S-&gt;&gt;C: ServerHello (chosen cipher, ECDH public key)
+    S-&gt;&gt;C: Certificate (server's public key, signed by CA)
+    S-&gt;&gt;C: CertificateVerify (signs handshake with private key)
+    S-&gt;&gt;C: Finished
+
+    Note over C: Verifies certificate chain
+    Note over C: Derives session keys from ECDH
+
+    C-&gt;&gt;S: Finished
+    Note over C,S: Encrypted communication begins </code></pre>
+<hr />
+<h2 id="practical-considerations">Practical Considerations<a class="headerlink" href="#practical-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="choosing-parameters">Choosing Parameters<a class="headerlink" href="#choosing-parameters" title="Permanent link">&para;</a></h3>
+<p><strong>Finite Field DH:</strong></p>
+<ul>
+<li><strong>p:</strong> 2048-bit minimum, 3072-bit recommended</li>
+<li><strong>g:</strong> Standard generator (often 2 or 5)</li>
+<li>Use standardized groups (RFC 3526)</li>
+</ul>
+<p><strong>Elliptic Curve DH:</strong></p>
+<ul>
+<li><strong>Curve25519</strong> (most common)</li>
+<li><strong>P-256</strong> (NIST curve)</li>
+<li><strong>P-384</strong> (higher security)</li>
+</ul>
+<hr />
+<h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h3>
+<p><strong>Comparison (approximate):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>DH-2048</th>
+<th>ECDH-256</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Key gen</td>
+<td>Slow</td>
+<td>Fast</td>
+</tr>
+<tr>
+<td>Shared secret</td>
+<td>Slow</td>
+<td>Fast</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>High</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Key size</td>
+<td>2048 bits</td>
+<td>256 bits</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Winner:</strong> ECDH for performance</p>
+<hr />
+<h3 id="common-implementations">Common Implementations<a class="headerlink" href="#common-implementations" title="Permanent link">&para;</a></h3>
+<p><strong>Libraries:</strong></p>
+<ul>
+<li>OpenSSL (supports DH, ECDH)</li>
+<li>libsodium (Curve25519)</li>
+<li>BoringSSL (Google's fork)</li>
+</ul>
+<p><strong>Protocols:</strong></p>
+<ul>
+<li>TLS 1.3 (ECDHE mandatory)</li>
+<li>SSH (supports multiple methods)</li>
+<li>IPsec/IKE (DH groups)</li>
+<li>Signal Protocol (X3DH)</li>
+</ul>
+<hr />
+<h2 id="security-best-practices">Security Best Practices<a class="headerlink" href="#security-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-use-ephemeral-keys">1. Use Ephemeral Keys<a class="headerlink" href="#1-use-ephemeral-keys" title="Permanent link">&para;</a></h3>
+<p>Always generate fresh keys per session (DHE/ECDHE).</p>
+<h3 id="2-authenticate">2. Authenticate<a class="headerlink" href="#2-authenticate" title="Permanent link">&para;</a></h3>
+<p>Never use plain DH - always authenticate!</p>
+<h3 id="3-use-kdf">3. Use KDF<a class="headerlink" href="#3-use-kdf" title="Permanent link">&para;</a></h3>
+<p>Don't use raw DH output - derive keys properly.</p>
+<h3 id="4-choose-strong-parameters">4. Choose Strong Parameters<a class="headerlink" href="#4-choose-strong-parameters" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Minimum 2048-bit DH</li>
+<li>Use well-known curves for ECDH</li>
+<li>Don't roll your own parameters</li>
+</ul>
+<h3 id="5-implement-constant-time">5. Implement Constant-Time<a class="headerlink" href="#5-implement-constant-time" title="Permanent link">&para;</a></h3>
+<p>Avoid timing side-channels.</p>
+<h3 id="6-check-for-zerosmall-subgroups">6. Check for Zero/Small Subgroups<a class="headerlink" href="#6-check-for-zerosmall-subgroups" title="Permanent link">&para;</a></h3>
+<p>Validate received public keys.</p>
+<hr />
+<h2 id="attacks-on-diffie-hellman">Attacks on Diffie-Hellman<a class="headerlink" href="#attacks-on-diffie-hellman" title="Permanent link">&para;</a></h2>
+<h3 id="1-small-subgroup-attack">1. Small Subgroup Attack<a class="headerlink" href="#1-small-subgroup-attack" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Weak generator limits key space</p>
+<p><strong>Defense:</strong> Validate public keys, use safe primes</p>
+<h3 id="2-logjam-attack-2015">2. Logjam Attack (2015)<a class="headerlink" href="#2-logjam-attack-2015" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Reused 512-bit DH parameters</p>
+<p><strong>Defense:</strong> Use 2048+ bit parameters</p>
+<h3 id="3-quantum-attacks">3. Quantum Attacks<a class="headerlink" href="#3-quantum-attacks" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Shor's algorithm breaks DL in polynomial time</p>
+<p><strong>Defense:</strong> Transition to post-quantum algorithms</p>
+<hr />
+<h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Diffie-Hellman</strong> enables secure key exchange over insecure channels</li>
+<li><strong>Security</strong> relies on discrete logarithm problem</li>
+<li><strong>ECDH</strong> is faster and uses smaller keys than traditional DH</li>
+<li><strong>Always authenticate</strong> - plain DH vulnerable to MITM</li>
+<li><strong>Ephemeral keys</strong> provide forward secrecy</li>
+<li><strong>KDF</strong> derives proper encryption keys from DH output</li>
+<li><strong>TLS 1.3</strong> uses authenticated ECDHE by default</li>
+<li><strong>Post-quantum</strong> algorithms needed for quantum threat</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

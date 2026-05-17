@@ -1,0 +1,2471 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cryptography notes from the University of Guelph">
+      
+      
+        <meta name="author" content="Sabrina Haniff">
+      
+      
+        <link rel="canonical" href="https://sabrinahaniff.github.io/CIS4520-Notes/rsa/">
+      
+      
+        <link rel="prev" href="../aes/">
+      
+      
+        <link rel="next" href="../diffie-hellman/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>RSA Encryption - CIS*4520 - Introduction to Cryptography</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rsa-cryptography" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="CIS*4520 - Introduction to Cryptography" class="md-header__button md-logo" aria-label="CIS*4520 - Introduction to Cryptography" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CIS*4520 - Introduction to Cryptography
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RSA Encryption
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../matrix-algebra/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../classical-ciphers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Classical Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../aes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Symmetric Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Public Key Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../hash-functions/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hash Functions
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../signatures/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Digital Signatures
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CIS*4520 - Introduction to Cryptography" class="md-nav__button md-logo" aria-label="CIS*4520 - Introduction to Cryptography" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CIS*4520 - Introduction to Cryptography
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../matrix-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matrix Algebra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modular-arithmetic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modular Arithmetic & GCD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classical Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Classical Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classical-ciphers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classical Ciphers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Symmetric Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Symmetric Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AES & Block Cipher Modes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public Key Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public Key Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSA Encryption
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSA Encryption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#public-key-cryptography" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Key Cryptography
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Key Cryptography">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-big-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Big Idea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why RSA?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-key-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Key Generation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Key Generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-choose-two-large-primes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Choose Two Large Primes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-compute-n-p-times-q" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Compute \(n = p \times q\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-compute-phin-p-1q-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Compute \(\phi(n) = (p-1)(q-1)\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-choose-public-exponent-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Choose Public Exponent \(e\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-compute-private-exponent-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Compute Private Exponent \(d\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Keys
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#public-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Key
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#private-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Private Key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Encryption
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Encryption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#encryption-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encryption Formula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-decryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Decryption
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Decryption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decryption-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decryption Formula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-rsa-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why RSA Works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why RSA Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Math
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eulers-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Euler's Theorem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-of-rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security of RSA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security of RSA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hard-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hard Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It's Hard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-secure-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing Secure Parameters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing Secure Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prime-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prime Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primality-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primality Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primality Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solution-probabilistic-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution: Probabilistic Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fermat-primality-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fermat Primality Test
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fermat Primality Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fermats-little-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fermat's Little Theorem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-probabilistic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It's Probabilistic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#miller-rabin-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Miller-Rabin Test
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Miller-Rabin Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#improvement-over-fermat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Improvement Over Fermat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accuracy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accuracy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA in Practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA in Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#textbook-rsa-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Textbook RSA Problems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#padding-schemes-oaep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Padding Schemes (OAEP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-rsa-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common RSA Attacks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common RSA Attacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#small-exponent-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Small Exponent Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-modulus-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Modulus Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timing-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diffie-hellman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diffie-Hellman & Key Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hash Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../signatures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#public-key-cryptography" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Key Cryptography
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Key Cryptography">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-big-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Big Idea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why RSA?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-key-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Key Generation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Key Generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-choose-two-large-primes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Choose Two Large Primes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-compute-n-p-times-q" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Compute \(n = p \times q\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-compute-phin-p-1q-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Compute \(\phi(n) = (p-1)(q-1)\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-choose-public-exponent-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Choose Public Exponent \(e\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-compute-private-exponent-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Compute Private Exponent \(d\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Keys
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#public-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Key
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#private-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Private Key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Encryption
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Encryption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#encryption-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encryption Formula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-decryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Decryption
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Decryption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decryption-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decryption Formula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-rsa-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why RSA Works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why RSA Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Math
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eulers-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Euler's Theorem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-of-rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security of RSA
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security of RSA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hard-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hard Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It's Hard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-secure-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing Secure Parameters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing Secure Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prime-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prime Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primality-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primality Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primality Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solution-probabilistic-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution: Probabilistic Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fermat-primality-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fermat Primality Test
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fermat Primality Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fermats-little-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fermat's Little Theorem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-probabilistic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It's Probabilistic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#miller-rabin-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Miller-Rabin Test
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Miller-Rabin Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#improvement-over-fermat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Improvement Over Fermat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accuracy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accuracy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA in Practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA in Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#textbook-rsa-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Textbook RSA Problems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#padding-schemes-oaep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Padding Schemes (OAEP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-rsa-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common RSA Attacks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common RSA Attacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#small-exponent-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Small Exponent Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-modulus-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Modulus Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timing-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="rsa-cryptography">RSA Cryptography<a class="headerlink" href="#rsa-cryptography" title="Permanent link">&para;</a></h1>
+<h2 id="public-key-cryptography">Public Key Cryptography<a class="headerlink" href="#public-key-cryptography" title="Permanent link">&para;</a></h2>
+<h3 id="the-big-idea">The Big Idea<a class="headerlink" href="#the-big-idea" title="Permanent link">&para;</a></h3>
+<p>In <strong>public key cryptography</strong>, there are <strong>two keys</strong>:</p>
+<ol>
+<li><strong>Public Key</strong> - Shared with everyone (used to <strong>encrypt</strong>)</li>
+<li><strong>Private Key</strong> - Kept secret (used to <strong>decrypt</strong>)</li>
+</ol>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant A as Alice (Sender)
+    participant B as Bob (Receiver)
+
+    Note over B: Generates key pair
+    B--&gt;&gt;A: Publishes public key (e, n)
+    Note over A: Encrypts with Bob's public key
+    A-&gt;&gt;B: Sends ciphertext C = Mᵉ mod n
+    Note over B: Decrypts with private key (d, n)
+    B-&gt;&gt;B: Recovers M = Cᵈ mod n</code></pre>
+<blockquote>
+<p><strong>Key insight:</strong> Anyone can encrypt, but only Bob can decrypt!</p>
+</blockquote>
+<hr />
+<h2 id="why-rsa">Why RSA?<a class="headerlink" href="#why-rsa" title="Permanent link">&para;</a></h2>
+<p><strong>Problem with symmetric crypto:</strong> How do you share the secret key securely?</p>
+<p><strong>RSA solution:</strong>
+- Encryption key is <strong>public</strong> (anyone can encrypt)
+- Decryption key is <strong>private</strong> (only recipient can decrypt)
+- Keys are mathematically related but <strong>computationally hard</strong> to derive one from the other</p>
+<hr />
+<h2 id="rsa-key-generation">RSA Key Generation<a class="headerlink" href="#rsa-key-generation" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    A([Start]) --&gt; B["Choose large primes p, q"]
+    B --&gt; C["Compute n = p × q\n(modulus)"]
+    C --&gt; D["Compute φ(n) = (p−1)(q−1)"]
+    D --&gt; E["Choose e where\ngcd(e, φ(n)) = 1\ncommonly e = 65537"]
+    E --&gt; F["Compute d = e⁻¹ mod φ(n)\nvia Extended Euclidean"]
+    F --&gt; G(["Public key: (e, n)\nPrivate key: (d, n)"])
+
+    style A fill:#7c4dff,color:#fff
+    style G fill:#00897b,color:#fff</code></pre>
+<h3 id="step-1-choose-two-large-primes">Step 1: Choose Two Large Primes<a class="headerlink" href="#step-1-choose-two-large-primes" title="Permanent link">&para;</a></h3>
+<p>Pick two large prime numbers <span class="arithmatex">\(p\)</span> and <span class="arithmatex">\(q\)</span>.</p>
+<p><strong>Example:</strong> <span class="arithmatex">\(p = 61, q = 53\)</span></p>
+<h3 id="step-2-compute-n-p-times-q">Step 2: Compute <span class="arithmatex">\(n = p \times q\)</span><a class="headerlink" href="#step-2-compute-n-p-times-q" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[n = p \times q\]</div>
+<p><strong>Example:</strong> <span class="arithmatex">\(n = 61 \times 53 = 3233\)</span></p>
+<p>This is the <strong>modulus</strong> for both keys.</p>
+<h3 id="step-3-compute-phin-p-1q-1">Step 3: Compute <span class="arithmatex">\(\phi(n) = (p-1)(q-1)\)</span><a class="headerlink" href="#step-3-compute-phin-p-1q-1" title="Permanent link">&para;</a></h3>
+<p>Euler's totient function:</p>
+<div class="arithmatex">\[\phi(n) = (p - 1)(q - 1)\]</div>
+<p><strong>Example:</strong> <span class="arithmatex">\(\phi(3233) = 60 \times 52 = 3120\)</span></p>
+<h3 id="step-4-choose-public-exponent-e">Step 4: Choose Public Exponent <span class="arithmatex">\(e\)</span><a class="headerlink" href="#step-4-choose-public-exponent-e" title="Permanent link">&para;</a></h3>
+<p>Pick <span class="arithmatex">\(e\)</span> such that:
+- <span class="arithmatex">\(1 &lt; e &lt; \phi(n)\)</span>
+- <span class="arithmatex">\(\gcd(e, \phi(n)) = 1\)</span> (e and <span class="arithmatex">\(\phi(n)\)</span> are coprime)</p>
+<p>Common choice: <span class="arithmatex">\(e = 65537 = 2^{16} + 1\)</span></p>
+<p><strong>Example:</strong> Let's use <span class="arithmatex">\(e = 17\)</span> (simpler for demo)</p>
+<p>Check: <span class="arithmatex">\(\gcd(17, 3120) = 1\)</span> ✓</p>
+<h3 id="step-5-compute-private-exponent-d">Step 5: Compute Private Exponent <span class="arithmatex">\(d\)</span><a class="headerlink" href="#step-5-compute-private-exponent-d" title="Permanent link">&para;</a></h3>
+<p>Find <span class="arithmatex">\(d\)</span> such that:</p>
+<div class="arithmatex">\[e \times d \equiv 1 \pmod{\phi(n)}\]</div>
+<p>In other words, <span class="arithmatex">\(d\)</span> is the <strong>modular inverse</strong> of <span class="arithmatex">\(e\)</span> modulo <span class="arithmatex">\(\phi(n)\)</span>.</p>
+<p><strong>Example:</strong> Find <span class="arithmatex">\(d\)</span> where <span class="arithmatex">\(17d \equiv 1 \pmod{3120}\)</span></p>
+<p>Using Extended Euclidean Algorithm:
+$<span class="arithmatex">\(d = 2753\)</span>$</p>
+<p>Verify: <span class="arithmatex">\(17 \times 2753 = 46801 = 15 \times 3120 + 1\)</span> ✓</p>
+<hr />
+<h2 id="rsa-keys">RSA Keys<a class="headerlink" href="#rsa-keys" title="Permanent link">&para;</a></h2>
+<h3 id="public-key">Public Key<a class="headerlink" href="#public-key" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[(n, e)\]</div>
+<p><strong>Example:</strong> <span class="arithmatex">\((3233, 17)\)</span></p>
+<h3 id="private-key">Private Key<a class="headerlink" href="#private-key" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[(n, d)\]</div>
+<p><strong>Example:</strong> <span class="arithmatex">\((3233, 2753)\)</span></p>
+<p><strong>Share:</strong> Public key <span class="arithmatex">\((n, e)\)</span> — anyone can use it<br />
+<strong>Keep secret:</strong> Private key <span class="arithmatex">\((n, d)\)</span> — only you have it</p>
+<hr />
+<h2 id="rsa-encryption">RSA Encryption<a class="headerlink" href="#rsa-encryption" title="Permanent link">&para;</a></h2>
+<h3 id="encryption-formula">Encryption Formula<a class="headerlink" href="#encryption-formula" title="Permanent link">&para;</a></h3>
+<p>Given plaintext message <span class="arithmatex">\(M\)</span> (as a number):</p>
+<div class="arithmatex">\[C = M^e \bmod n\]</div>
+<p>where:
+- <span class="arithmatex">\(C\)</span> = ciphertext
+- <span class="arithmatex">\(M\)</span> = plaintext
+- <span class="arithmatex">\(e\)</span> = public exponent
+- <span class="arithmatex">\(n\)</span> = modulus</p>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<p><strong>Plaintext:</strong> <span class="arithmatex">\(M = 123\)</span><br />
+<strong>Public key:</strong> <span class="arithmatex">\((n, e) = (3233, 17)\)</span></p>
+<div class="arithmatex">\[C = 123^{17} \bmod 3233\]</div>
+<p>Using fast exponentiation:
+$<span class="arithmatex">\(C = 855\)</span>$</p>
+<hr />
+<h2 id="rsa-decryption">RSA Decryption<a class="headerlink" href="#rsa-decryption" title="Permanent link">&para;</a></h2>
+<h3 id="decryption-formula">Decryption Formula<a class="headerlink" href="#decryption-formula" title="Permanent link">&para;</a></h3>
+<p>Given ciphertext <span class="arithmatex">\(C\)</span>:</p>
+<div class="arithmatex">\[M = C^d \bmod n\]</div>
+<p>where:
+- <span class="arithmatex">\(M\)</span> = plaintext (recovered)
+- <span class="arithmatex">\(C\)</span> = ciphertext
+- <span class="arithmatex">\(d\)</span> = private exponent
+- <span class="arithmatex">\(n\)</span> = modulus</p>
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<p><strong>Ciphertext:</strong> <span class="arithmatex">\(C = 855\)</span><br />
+<strong>Private key:</strong> <span class="arithmatex">\((n, d) = (3233, 2753)\)</span></p>
+<div class="arithmatex">\[M = 855^{2753} \bmod 3233\]</div>
+<p>$<span class="arithmatex">\(M = 123\)</span>$ ✓</p>
+<p><strong>Success!</strong> We recovered the original message.</p>
+<hr />
+<h2 id="why-rsa-works">Why RSA Works<a class="headerlink" href="#why-rsa-works" title="Permanent link">&para;</a></h2>
+<h3 id="the-math">The Math<a class="headerlink" href="#the-math" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[C = M^e \bmod n$$
+$$M = C^d \bmod n\]</div>
+<p>Substituting:
+$<span class="arithmatex">\(M = (M^e)^d \bmod n = M^{ed} \bmod n\)</span>$</p>
+<h3 id="eulers-theorem">Euler's Theorem<a class="headerlink" href="#eulers-theorem" title="Permanent link">&para;</a></h3>
+<p>If <span class="arithmatex">\(\gcd(M, n) = 1\)</span>, then:</p>
+<div class="arithmatex">\[M^{\phi(n)} \equiv 1 \pmod{n}\]</div>
+<p>Since <span class="arithmatex">\(ed \equiv 1 \pmod{\phi(n)}\)</span>, we can write:</p>
+<div class="arithmatex">\[ed = 1 + k\phi(n)\]</div>
+<p>for some integer <span class="arithmatex">\(k\)</span>.</p>
+<p>Therefore:
+$<span class="arithmatex">\(M^{ed} = M^{1 + k\phi(n)} = M \cdot (M^{\phi(n)})^k \equiv M \cdot 1^k \equiv M \pmod{n}\)</span>$</p>
+<hr />
+<h2 id="security-of-rsa">Security of RSA<a class="headerlink" href="#security-of-rsa" title="Permanent link">&para;</a></h2>
+<h3 id="the-hard-problem">The Hard Problem<a class="headerlink" href="#the-hard-problem" title="Permanent link">&para;</a></h3>
+<p><strong>Easy:</strong> Given <span class="arithmatex">\((n, e)\)</span>, compute <span class="arithmatex">\(C = M^e \bmod n\)</span></p>
+<p><strong>Hard:</strong> Given <span class="arithmatex">\((n, e, C)\)</span>, find <span class="arithmatex">\(M\)</span> without knowing <span class="arithmatex">\(d\)</span></p>
+<h3 id="why-its-hard">Why It's Hard<a class="headerlink" href="#why-its-hard" title="Permanent link">&para;</a></h3>
+<p>To find <span class="arithmatex">\(d\)</span>, you need to:
+1. Factor <span class="arithmatex">\(n\)</span> into <span class="arithmatex">\(p\)</span> and <span class="arithmatex">\(q\)</span>
+2. Compute <span class="arithmatex">\(\phi(n) = (p-1)(q-1)\)</span>
+3. Find <span class="arithmatex">\(d = e^{-1} \bmod \phi(n)\)</span></p>
+<p><strong>Factoring large numbers is computationally infeasible!</strong></p>
+<p>For 2048-bit RSA:
+- <span class="arithmatex">\(n\)</span> has ~600 digits
+- Best known algorithms take billions of years</p>
+<hr />
+<h2 id="choosing-secure-parameters">Choosing Secure Parameters<a class="headerlink" href="#choosing-secure-parameters" title="Permanent link">&para;</a></h2>
+<h3 id="key-size">Key Size<a class="headerlink" href="#key-size" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Minimum:</strong> 2048 bits</li>
+<li><strong>Recommended:</strong> 3072-4096 bits</li>
+<li><strong>Insecure:</strong> 1024 bits or less</li>
+</ul>
+<h3 id="prime-selection">Prime Selection<a class="headerlink" href="#prime-selection" title="Permanent link">&para;</a></h3>
+<p><span class="arithmatex">\(p\)</span> and <span class="arithmatex">\(q\)</span> must be:
+- <strong>Large</strong> (1024+ bits each)
+- <strong>Random</strong>
+- <strong>Not too close</strong> to each other
+- <strong>Actually prime</strong> (use primality testing)</p>
+<hr />
+<h2 id="primality-testing">Primality Testing<a class="headerlink" href="#primality-testing" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>Problem:</strong> RSA needs large primes. We cannot test primality by dividing up to <span class="arithmatex">\(\sqrt{n}\)</span> — too slow for big numbers!</p>
+</blockquote>
+<h3 id="solution-probabilistic-tests">Solution: Probabilistic Tests<a class="headerlink" href="#solution-probabilistic-tests" title="Permanent link">&para;</a></h3>
+<p>Instead of checking every divisor, we test if a number "behaves like a prime."</p>
+<ul>
+<li>If it <strong>fails</strong> → definitely composite</li>
+<li>If it <strong>passes</strong> many tests → probably prime</li>
+</ul>
+<hr />
+<h2 id="fermat-primality-test">Fermat Primality Test<a class="headerlink" href="#fermat-primality-test" title="Permanent link">&para;</a></h2>
+<h3 id="fermats-little-theorem">Fermat's Little Theorem<a class="headerlink" href="#fermats-little-theorem" title="Permanent link">&para;</a></h3>
+<p>If <span class="arithmatex">\(p\)</span> is prime and <span class="arithmatex">\(\gcd(a, p) = 1\)</span>, then:</p>
+<div class="arithmatex">\[a^{p-1} \equiv 1 \pmod{p}\]</div>
+<h3 id="the-test">The Test<a class="headerlink" href="#the-test" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Pick a random <span class="arithmatex">\(a\)</span> where <span class="arithmatex">\(1 &lt; a &lt; n\)</span></li>
+<li>Compute <span class="arithmatex">\(a^{n-1} \bmod n\)</span></li>
+<li><strong>If NOT 1</strong> → <span class="arithmatex">\(n\)</span> is composite</li>
+<li><strong>If 1</strong> → <span class="arithmatex">\(n\)</span> is <em>maybe</em> prime</li>
+</ol>
+<h3 id="why-its-probabilistic">Why It's Probabilistic<a class="headerlink" href="#why-its-probabilistic" title="Permanent link">&para;</a></h3>
+<p>Some composite numbers pass the Fermat test. These are called <strong>Carmichael numbers</strong>.</p>
+<p><strong>Example:</strong> 561 is composite but passes Fermat test for all <span class="arithmatex">\(a\)</span> coprime to 561.</p>
+<hr />
+<h2 id="miller-rabin-test">Miller-Rabin Test<a class="headerlink" href="#miller-rabin-test" title="Permanent link">&para;</a></h2>
+<h3 id="improvement-over-fermat">Improvement Over Fermat<a class="headerlink" href="#improvement-over-fermat" title="Permanent link">&para;</a></h3>
+<ul>
+<li>More reliable than Fermat</li>
+<li>Still probabilistic</li>
+<li>Much harder to fool</li>
+</ul>
+<h3 id="how-it-works_1">How It Works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h3>
+<p>Write <span class="arithmatex">\(n - 1 = 2^r \times d\)</span> where <span class="arithmatex">\(d\)</span> is odd.</p>
+<p>For random <span class="arithmatex">\(a\)</span>:
+1. Compute <span class="arithmatex">\(x = a^d \bmod n\)</span>
+2. If <span class="arithmatex">\(x = 1\)</span> or <span class="arithmatex">\(x = n-1\)</span> → probably prime
+3. Square <span class="arithmatex">\(x\)</span> repeatedly <span class="arithmatex">\(r-1\)</span> times
+4. If you ever get <span class="arithmatex">\(n-1\)</span> → probably prime
+5. Otherwise → definitely composite</p>
+<h3 id="accuracy">Accuracy<a class="headerlink" href="#accuracy" title="Permanent link">&para;</a></h3>
+<p>Run Miller-Rabin <span class="arithmatex">\(k\)</span> times with different random values of <span class="arithmatex">\(a\)</span>:
+- Probability of error: <span class="arithmatex">\(&lt; 4^{-k}\)</span>
+- With <span class="arithmatex">\(k = 40\)</span> → error probability <span class="arithmatex">\(&lt; 2^{-80}\)</span> (negligible)</p>
+<hr />
+<h2 id="rsa-in-practice">RSA in Practice<a class="headerlink" href="#rsa-in-practice" title="Permanent link">&para;</a></h2>
+<h3 id="textbook-rsa-problems">Textbook RSA Problems<a class="headerlink" href="#textbook-rsa-problems" title="Permanent link">&para;</a></h3>
+<p><strong>Never use raw RSA!</strong> It has vulnerabilities:</p>
+<ol>
+<li><strong>Deterministic</strong> - same message always produces same ciphertext</li>
+<li><strong>Malleable</strong> - can manipulate ciphertexts</li>
+<li><strong>No integrity</strong> - attacker can modify messages</li>
+</ol>
+<h3 id="padding-schemes-oaep">Padding Schemes (OAEP)<a class="headerlink" href="#padding-schemes-oaep" title="Permanent link">&para;</a></h3>
+<p>Add randomness and structure before encryption:</p>
+<div class="arithmatex">\[C = (M \oplus G(r) \| r \oplus H(M \oplus G(r)))^e \bmod n\]</div>
+<p>This makes RSA:
+- <strong>Non-deterministic</strong> (random for each encryption)
+- <strong>Semantically secure</strong>
+- <strong>Resistant to attacks</strong></p>
+<hr />
+<h2 id="common-rsa-attacks">Common RSA Attacks<a class="headerlink" href="#common-rsa-attacks" title="Permanent link">&para;</a></h2>
+<h3 id="small-exponent-attack">Small Exponent Attack<a class="headerlink" href="#small-exponent-attack" title="Permanent link">&para;</a></h3>
+<p>If <span class="arithmatex">\(e\)</span> is small (e.g., <span class="arithmatex">\(e = 3\)</span>) and message is short:
+- Ciphertext might be smaller than <span class="arithmatex">\(n\)</span>
+- Can recover <span class="arithmatex">\(M\)</span> by taking cube root</p>
+<p><strong>Defense:</strong> Use padding (OAEP)</p>
+<h3 id="common-modulus-attack">Common Modulus Attack<a class="headerlink" href="#common-modulus-attack" title="Permanent link">&para;</a></h3>
+<p>If two users share the same <span class="arithmatex">\(n\)</span> but different <span class="arithmatex">\(e, d\)</span> pairs:
+- Attacker can decrypt without private key</p>
+<p><strong>Defense:</strong> Never reuse modulus</p>
+<h3 id="timing-attacks">Timing Attacks<a class="headerlink" href="#timing-attacks" title="Permanent link">&para;</a></h3>
+<p>Measure how long decryption takes to learn about private key.</p>
+<p><strong>Defense:</strong> Use constant-time algorithms</p>
+<hr />
+<h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>RSA uses two keys</strong> - public for encryption, private for decryption</li>
+<li><strong>Security relies on factoring</strong> being hard</li>
+<li><strong>Key generation</strong> requires large random primes</li>
+<li><strong>Primality testing</strong> uses probabilistic algorithms (Miller-Rabin)</li>
+<li><strong>Never use textbook RSA</strong> - always use padding (OAEP)</li>
+<li><strong>Key size matters</strong> - minimum 2048 bits</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

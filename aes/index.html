@@ -1,0 +1,2656 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cryptography notes from the University of Guelph">
+      
+      
+        <meta name="author" content="Sabrina Haniff">
+      
+      
+        <link rel="canonical" href="https://sabrinahaniff.github.io/CIS4520-Notes/aes/">
+      
+      
+        <link rel="prev" href="../classical-ciphers/">
+      
+      
+        <link rel="next" href="../rsa/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>AES & Block Cipher Modes - CIS*4520 - Introduction to Cryptography</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#aes-and-block-ciphers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="CIS*4520 - Introduction to Cryptography" class="md-header__button md-logo" aria-label="CIS*4520 - Introduction to Cryptography" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CIS*4520 - Introduction to Cryptography
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AES & Block Cipher Modes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../matrix-algebra/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../classical-ciphers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Classical Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Symmetric Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../rsa/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Public Key Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../hash-functions/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hash Functions
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../signatures/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Digital Signatures
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CIS*4520 - Introduction to Cryptography" class="md-nav__button md-logo" aria-label="CIS*4520 - Introduction to Cryptography" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CIS*4520 - Introduction to Cryptography
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../matrix-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matrix Algebra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modular-arithmetic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modular Arithmetic & GCD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classical Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Classical Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classical-ciphers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classical Ciphers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Symmetric Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Symmetric Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AES & Block Cipher Modes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AES & Block Cipher Modes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-block-cipher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Block Cipher?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is a Block Cipher?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-advanced-encryption-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES (Advanced Encryption Standard)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AES (Advanced Encryption Standard)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AES Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-level-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Level Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AES Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-subbytes-confusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. SubBytes (Confusion)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-shiftrows-diffusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ShiftRows (Diffusion)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-mixcolumns-diffusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. MixColumns (Diffusion)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-addroundkey-key-mixing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. AddRoundKey (Key Mixing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#galois-fields-gf28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Galois Fields GF(2⁸)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Galois Fields GF(2⁸)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-galois-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Galois Fields?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gf28-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GF(2⁸) Basics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#addition-in-gf28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addition in GF(2⁸)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiplication-in-gf28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiplication in GF(2⁸)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-expansion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Expansion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES Variants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#block-cipher-modes-of-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block Cipher Modes of Operation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Block Cipher Modes of Operation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecb-mode-electronic-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECB Mode (Electronic Codebook)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ECB Mode (Electronic Codebook)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbc-mode-cipher-block-chaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CBC Mode (Cipher Block Chaining)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CBC Mode (Cipher Block Chaining)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ctr-mode-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTR Mode (Counter)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CTR Mode (Counter)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gcm-mode-galoiscounter-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GCM Mode (Galois/Counter Mode)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GCM Mode (Galois/Counter Mode)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Padding
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Padding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pkcs7-padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PKCS#7 Padding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mode-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AES Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-aes-is-secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why AES is Secure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Pitfalls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Pitfalls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#side-channel-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side-Channel Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weak Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ivnonce-reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV/Nonce Reuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public Key Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public Key Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rsa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSA Encryption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diffie-hellman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diffie-Hellman & Key Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hash Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../signatures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-block-cipher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Block Cipher?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is a Block Cipher?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-advanced-encryption-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES (Advanced Encryption Standard)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AES (Advanced Encryption Standard)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AES Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-level-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Level Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AES Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-subbytes-confusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. SubBytes (Confusion)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-shiftrows-diffusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ShiftRows (Diffusion)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-mixcolumns-diffusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. MixColumns (Diffusion)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-addroundkey-key-mixing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. AddRoundKey (Key Mixing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#galois-fields-gf28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Galois Fields GF(2⁸)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Galois Fields GF(2⁸)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-galois-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Galois Fields?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gf28-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GF(2⁸) Basics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#addition-in-gf28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addition in GF(2⁸)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiplication-in-gf28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiplication in GF(2⁸)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-expansion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Expansion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES Variants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#block-cipher-modes-of-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block Cipher Modes of Operation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Block Cipher Modes of Operation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecb-mode-electronic-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECB Mode (Electronic Codebook)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ECB Mode (Electronic Codebook)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cbc-mode-cipher-block-chaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CBC Mode (Cipher Block Chaining)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CBC Mode (Cipher Block Chaining)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ctr-mode-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTR Mode (Counter)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CTR Mode (Counter)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gcm-mode-galoiscounter-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GCM Mode (Galois/Counter Mode)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GCM Mode (Galois/Counter Mode)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Padding
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Padding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pkcs7-padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PKCS#7 Padding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mode-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aes-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AES Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-aes-is-secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why AES is Secure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Pitfalls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Pitfalls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#side-channel-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side-Channel Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weak Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ivnonce-reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IV/Nonce Reuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="aes-and-block-ciphers">AES and Block Ciphers<a class="headerlink" href="#aes-and-block-ciphers" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-a-block-cipher">What is a Block Cipher?<a class="headerlink" href="#what-is-a-block-cipher" title="Permanent link">&para;</a></h2>
+<p>A <strong>block cipher</strong> encrypts data in <strong>fixed-size blocks</strong> (e.g., 128 bits at a time).</p>
+<p><strong>Contrast with stream ciphers:</strong> Process one bit/byte at a time</p>
+<h3 id="key-properties">Key Properties<a class="headerlink" href="#key-properties" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Deterministic</strong>: same plaintext block → same ciphertext block (with same key)</li>
+<li><strong>Reversible</strong>: encryption and decryption are inverse operations</li>
+<li><strong>Confusion &amp; Diffusion</strong>: Claude Shannon's principles</li>
+</ol>
+<hr />
+<h2 id="aes-advanced-encryption-standard">AES (Advanced Encryption Standard)<a class="headerlink" href="#aes-advanced-encryption-standard" title="Permanent link">&para;</a></h2>
+<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
+<p><strong>AES</strong> is the <strong>standard symmetric block cipher</strong> used everywhere today.</p>
+<ul>
+<li><strong>Block size:</strong> 128 bits (16 bytes)</li>
+<li><strong>Key sizes:</strong> 128, 192, or 256 bits</li>
+<li><strong>Rounds:</strong> 10, 12, or 14 (depending on key size)</li>
+</ul>
+<p><strong>History:</strong></p>
+<ul>
+<li>Replaced DES in 2001</li>
+<li>Winner of NIST competition</li>
+<li>Original name: Rijndael</li>
+</ul>
+<hr />
+<h2 id="aes-structure">AES Structure<a class="headerlink" href="#aes-structure" title="Permanent link">&para;</a></h2>
+<h3 id="high-level-flow">High-Level Flow<a class="headerlink" href="#high-level-flow" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    A([Plaintext\n128 bits]) --&gt; B[Key Expansion\nGenerate round keys]
+    B --&gt; C[AddRoundKey\nInitial Round]
+    C --&gt; D[SubBytes]
+    D --&gt; E[ShiftRows]
+    E --&gt; F[MixColumns]
+    F --&gt; G[AddRoundKey]
+    G --&gt; H{Rounds 1–9\ncomplete?}
+    H -- No --&gt; D
+    H -- Yes --&gt; I[SubBytes\nFinal Round]
+    I --&gt; J[ShiftRows]
+    J --&gt; K[AddRoundKey]
+    K --&gt; L([Ciphertext\n128 bits])
+
+    style A fill:#7c4dff,color:#fff
+    style L fill:#00897b,color:#fff
+    style H fill:#f57c00,color:#fff</code></pre>
+<hr />
+<h2 id="the-state">The State<a class="headerlink" href="#the-state" title="Permanent link">&para;</a></h2>
+<p>AES organizes the 128-bit block as a <strong>4×4 matrix of bytes</strong> (called the <strong>state</strong>).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────┬─────┬─────┬─────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│ s₀₀ │ s₀₁ │ s₀₂ │ s₀₃ │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─────┼─────┼─────┼─────┤
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│ s₁₀ │ s₁₁ │ s₁₂ │ s₁₃ │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├─────┼─────┼─────┼─────┤
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│ s₂₀ │ s₂₁ │ s₂₂ │ s₂₃ │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├─────┼─────┼─────┼─────┤
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│ s₃₀ │ s₃₁ │ s₃₂ │ s₃₃ │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└─────┴─────┴─────┴─────┘
+</code></pre></div>
+<p>Each cell is <strong>1 byte</strong> (8 bits).</p>
+<hr />
+<h2 id="aes-operations">AES Operations<a class="headerlink" href="#aes-operations" title="Permanent link">&para;</a></h2>
+<h3 id="1-subbytes-confusion">1. SubBytes (Confusion)<a class="headerlink" href="#1-subbytes-confusion" title="Permanent link">&para;</a></h3>
+<p>Replace each byte with another byte from the <strong>S-box</strong> (substitution box).</p>
+<p><strong>Purpose:</strong> Non-linear transformation (provides confusion)</p>
+<div class="arithmatex">\[s'_{i,j} = \text{S-box}[s_{i,j}]\]</div>
+<p><strong>Example:</strong></p>
+<ul>
+<li>Input byte: <code>0x53</code></li>
+<li>S-box lookup: <code>0xED</code></li>
+<li>Output byte: <code>0xED</code></li>
+</ul>
+<p><strong>S-box properties:</strong></p>
+<ul>
+<li>Non-linear (based on multiplicative inverse in GF(2⁸))</li>
+<li>Designed to resist differential and linear cryptanalysis</li>
+</ul>
+<hr />
+<h3 id="2-shiftrows-diffusion">2. ShiftRows (Diffusion)<a class="headerlink" href="#2-shiftrows-diffusion" title="Permanent link">&para;</a></h3>
+<p>Cyclically shift the rows of the state:</p>
+<ul>
+<li><strong>Row 0:</strong> No shift</li>
+<li><strong>Row 1:</strong> Shift left by 1</li>
+<li><strong>Row 2:</strong> Shift left by 2</li>
+<li><strong>Row 3:</strong> Shift left by 3</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Before:                After:
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>┌────────────────┐    ┌────────────────┐
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│ s₀₀ s₀₁ s₀₂ s₀₃│    │ s₀₀ s₀₁ s₀₂ s₀₃│  (no shift)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│ s₁₀ s₁₁ s₁₂ s₁₃│    │ s₁₁ s₁₂ s₁₃ s₁₀│  (shift 1)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│ s₂₀ s₂₁ s₂₂ s₂₃│ →  │ s₂₂ s₂₃ s₂₀ s₂₁│  (shift 2)
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│ s₃₀ s₃₁ s₃₂ s₃₃│    │ s₃₃ s₃₀ s₃₁ s₃₂│  (shift 3)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>└────────────────┘    └────────────────┘
+</code></pre></div>
+<p><strong>Purpose:</strong> Spreads bytes across columns (diffusion)</p>
+<hr />
+<h3 id="3-mixcolumns-diffusion">3. MixColumns (Diffusion)<a class="headerlink" href="#3-mixcolumns-diffusion" title="Permanent link">&para;</a></h3>
+<p>Mix each <strong>column</strong> independently using matrix multiplication in GF(2⁸).</p>
+<div class="arithmatex">\[\begin{bmatrix} s'_{0,j} \\ s'_{1,j} \\ s'_{2,j} \\ s'_{3,j} \end{bmatrix} = \begin{bmatrix} 2 &amp; 3 &amp; 1 &amp; 1 \\ 1 &amp; 2 &amp; 3 &amp; 1 \\ 1 &amp; 1 &amp; 2 &amp; 3 \\ 3 &amp; 1 &amp; 1 &amp; 2 \end{bmatrix} \begin{bmatrix} s_{0,j} \\ s_{1,j} \\ s_{2,j} \\ s_{3,j} \end{bmatrix}\]</div>
+<p><strong>Purpose:</strong> Each output byte depends on all 4 input bytes (diffusion)</p>
+<p><strong>Note:</strong> Multiplication is in <strong>GF(2⁸)</strong>, not regular integers!</p>
+<hr />
+<h3 id="4-addroundkey-key-mixing">4. AddRoundKey (Key Mixing)<a class="headerlink" href="#4-addroundkey-key-mixing" title="Permanent link">&para;</a></h3>
+<p>XOR the state with the round key.</p>
+<div class="arithmatex">\[s'_{i,j} = s_{i,j} \oplus k_{i,j}\]</div>
+<p><strong>Purpose:</strong> Incorporate the secret key</p>
+<hr />
+<h2 id="galois-fields-gf28">Galois Fields GF(2⁸)<a class="headerlink" href="#galois-fields-gf28" title="Permanent link">&para;</a></h2>
+<h3 id="why-galois-fields">Why Galois Fields?<a class="headerlink" href="#why-galois-fields" title="Permanent link">&para;</a></h3>
+<p>AES does math on <strong>bytes</strong> (8-bit chunks). But AES needs to:</p>
+<ul>
+<li><strong>Multiply bytes</strong> (for MixColumns)</li>
+<li><strong>Find inverses</strong> (for S-box)</li>
+</ul>
+<p>Regular arithmetic doesn't work well for cryptography. <strong>Galois Fields</strong> provide the right structure.</p>
+<hr />
+<h3 id="gf28-basics">GF(2⁸) Basics<a class="headerlink" href="#gf28-basics" title="Permanent link">&para;</a></h3>
+<p>Elements of GF(2⁸):</p>
+<ul>
+<li>All 8-bit values: <code>0x00</code> to <code>0xFF</code></li>
+<li>Represented as polynomials of degree &lt; 8</li>
+</ul>
+<p><strong>Example:</strong> <code>0x53</code> = <span class="arithmatex">\(x^6 + x^4 + x + 1\)</span></p>
+<hr />
+<h3 id="addition-in-gf28">Addition in GF(2⁸)<a class="headerlink" href="#addition-in-gf28" title="Permanent link">&para;</a></h3>
+<p>Addition = <strong>XOR</strong></p>
+<div class="arithmatex">\[a + b = a \oplus b\]</div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>  0x53 = 01010011
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>⊕ 0xCA = 11001010
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  ──────────────
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  0x99 = 10011001
+</code></pre></div></p>
+<hr />
+<h3 id="multiplication-in-gf28">Multiplication in GF(2⁸)<a class="headerlink" href="#multiplication-in-gf28" title="Permanent link">&para;</a></h3>
+<p>Multiply polynomials, then <strong>reduce modulo</strong> an irreducible polynomial.</p>
+<p><strong>AES uses:</strong> <span class="arithmatex">\(m(x) = x^8 + x^4 + x^3 + x + 1\)</span></p>
+<p><strong>Example:</strong> <span class="arithmatex">\(0x53 \times 0xCA\)</span> in GF(2⁸)</p>
+<ol>
+<li>Multiply polynomials</li>
+<li>Reduce mod <span class="arithmatex">\(m(x)\)</span></li>
+<li>Result (in GF(2⁸))</li>
+</ol>
+<p><strong>Special case: multiply by 2:</strong></p>
+<ul>
+<li>If MSB = 0: left shift</li>
+<li>If MSB = 1: left shift, then XOR with <code>0x1B</code></li>
+</ul>
+<hr />
+<h2 id="key-expansion">Key Expansion<a class="headerlink" href="#key-expansion" title="Permanent link">&para;</a></h2>
+<p>AES takes <strong>one original key</strong> and expands it into multiple <strong>round keys</strong>.</p>
+<p><strong>For AES-128:</strong></p>
+<ul>
+<li>Original key: 128 bits (16 bytes)</li>
+<li>Need: 11 round keys (176 bytes total)</li>
+</ul>
+<p><strong>Process:</strong></p>
+<ol>
+<li>Copy original key as first 4 words</li>
+<li>
+<p>Generate new words using:</p>
+</li>
+<li>
+<p><strong>RotWord</strong> - circular byte rotation</p>
+</li>
+<li><strong>SubWord</strong> - S-box substitution</li>
+<li><strong>Rcon</strong> - round constant XOR</li>
+</ol>
+<hr />
+<h2 id="aes-variants">AES Variants<a class="headerlink" href="#aes-variants" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Key Size</th>
+<th>Rounds</th>
+<th>Security Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AES-128</td>
+<td>128 bits</td>
+<td>10</td>
+<td>High</td>
+</tr>
+<tr>
+<td>AES-192</td>
+<td>192 bits</td>
+<td>12</td>
+<td>Very high</td>
+</tr>
+<tr>
+<td>AES-256</td>
+<td>256 bits</td>
+<td>14</td>
+<td>Extremely high</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Most common:</strong> AES-128 (good balance of speed and security)</p>
+<hr />
+<h2 id="block-cipher-modes-of-operation">Block Cipher Modes of Operation<a class="headerlink" href="#block-cipher-modes-of-operation" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h3>
+<p>A block cipher like AES encrypts <strong>one fixed-size block</strong> at a time. But real messages:</p>
+<ul>
+<li>Are longer than one block</li>
+<li>Might not be a multiple of block size</li>
+</ul>
+<p><strong>How do we encrypt multiple blocks?</strong></p>
+<hr />
+<h2 id="ecb-mode-electronic-codebook">ECB Mode (Electronic Codebook)<a class="headerlink" href="#ecb-mode-electronic-codebook" title="Permanent link">&para;</a></h2>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p>Encrypt each block <strong>independently</strong> with the same key.</p>
+<pre class="mermaid"><code>flowchart LR
+    P1[P₁] --&gt; E1[AES_K]
+    P2[P₂] --&gt; E2[AES_K]
+    P3[P₃] --&gt; E3[AES_K]
+    E1 --&gt; C1[C₁]
+    E2 --&gt; C2[C₂]
+    E3 --&gt; C3[C₃]
+    style E1 fill:#ef5350,color:#fff
+    style E2 fill:#ef5350,color:#fff
+    style E3 fill:#ef5350,color:#fff</code></pre>
+<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">NEVER USE ECB!</p>
+<p><strong>Problem:</strong> Identical plaintext blocks → identical ciphertext blocks</p>
+<p><strong>Attack:</strong> Patterns in plaintext are visible in ciphertext</p>
+<p><strong>Famous example:</strong> ECB penguin image: encrypted but still recognizable!</p>
+</div>
+<hr />
+<h2 id="cbc-mode-cipher-block-chaining">CBC Mode (Cipher Block Chaining)<a class="headerlink" href="#cbc-mode-cipher-block-chaining" title="Permanent link">&para;</a></h2>
+<h3 id="how-it-works_1">How It Works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h3>
+<p>XOR each plaintext block with the <strong>previous ciphertext block</strong> before encryption.</p>
+<pre class="mermaid"><code>flowchart LR
+    IV([IV]) --&gt; X1((⊕))
+    P1[P₁] --&gt; X1
+    X1 --&gt; E1[AES_K] --&gt; C1[C₁]
+    C1 --&gt; X2((⊕))
+    P2[P₂] --&gt; X2
+    X2 --&gt; E2[AES_K] --&gt; C2[C₂]
+    C2 --&gt; X3((⊕))
+    P3[P₃] --&gt; X3
+    X3 --&gt; E3[AES_K] --&gt; C3[C₃]
+
+    style IV fill:#7c4dff,color:#fff
+    style E1 fill:#1565c0,color:#fff
+    style E2 fill:#1565c0,color:#fff
+    style E3 fill:#1565c0,color:#fff</code></pre>
+<p><strong>Initialization Vector (IV):</strong></p>
+<ul>
+<li>Random value for first block</li>
+<li>Must be unpredictable</li>
+<li>Transmitted with ciphertext (can be public)</li>
+</ul>
+<hr />
+<h3 id="decryption">Decryption<a class="headerlink" href="#decryption" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>C₁ → [D_K] → ⊕ IV → P₁
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>C₂ → [D_K] → ⊕ C₁ → P₂
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>C₃ → [D_K] → ⊕ C₂ → P₃
+</code></pre></div>
+<hr />
+<h3 id="security_1">Security<a class="headerlink" href="#security_1" title="Permanent link">&para;</a></h3>
+<p><strong>Good:</strong></p>
+<ul>
+<li>Identical plaintexts → different ciphertexts (if IV is random)</li>
+<li>Self-synchronizing</li>
+</ul>
+<p><strong>Issues:</strong></p>
+<ul>
+<li><strong>Not parallelizable</strong> for encryption</li>
+<li><strong>Padding oracle attacks</strong> possible</li>
+<li><strong>IV must be unpredictable</strong> (not just unique)</li>
+</ul>
+<hr />
+<h2 id="ctr-mode-counter">CTR Mode (Counter)<a class="headerlink" href="#ctr-mode-counter" title="Permanent link">&para;</a></h2>
+<h3 id="how-it-works_2">How It Works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h3>
+<p>Encrypt a <strong>counter</strong> value, then XOR with plaintext.</p>
+<pre class="mermaid"><code>flowchart LR
+    N1["Nonce ∥ 1"] --&gt; E1[AES_K]
+    N2["Nonce ∥ 2"] --&gt; E2[AES_K]
+    N3["Nonce ∥ 3"] --&gt; E3[AES_K]
+    E1 --&gt; X1((⊕)) --&gt; C1[C₁]
+    E2 --&gt; X2((⊕)) --&gt; C2[C₂]
+    E3 --&gt; X3((⊕)) --&gt; C3[C₃]
+    P1[P₁] --&gt; X1
+    P2[P₂] --&gt; X2
+    P3[P₃] --&gt; X3
+    style E1 fill:#00897b,color:#fff
+    style E2 fill:#00897b,color:#fff
+    style E3 fill:#00897b,color:#fff</code></pre>
+<p><strong>Nonce:</strong> Number used once (like IV)<br />
+<strong>Counter:</strong> Increments for each block</p>
+<h3 id="security_2">Security<a class="headerlink" href="#security_2" title="Permanent link">&para;</a></h3>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li><strong>Parallelizable</strong> (both encryption and decryption)</li>
+<li>No padding needed</li>
+<li>Random access to blocks</li>
+<li>Turns block cipher into stream cipher</li>
+</ul>
+<p><strong>Requirements:</strong></p>
+<ul>
+<li><strong>Never reuse nonce</strong> with same key</li>
+<li>Counter must not repeat</li>
+</ul>
+<hr />
+<h2 id="gcm-mode-galoiscounter-mode">GCM Mode (Galois/Counter Mode)<a class="headerlink" href="#gcm-mode-galoiscounter-mode" title="Permanent link">&para;</a></h2>
+<h3 id="how-it-works_3">How It Works<a class="headerlink" href="#how-it-works_3" title="Permanent link">&para;</a></h3>
+<p><strong>CTR mode</strong> + <strong>authentication tag</strong> (AEAD: Authenticated Encryption with Associated Data)</p>
+<pre class="mermaid"><code>flowchart LR
+    A[Plaintext] --&gt; B[CTR Encryption]
+    B --&gt; C[Ciphertext]
+    C --&gt; D[GHASH]
+    AD[Additional Data] --&gt; D
+    D --&gt; E[Auth Tag]
+    B --&gt; F([Ciphertext + Tag])
+    E --&gt; F
+    style F fill:#00897b,color:#fff</code></pre>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li><strong>Authenticated encryption</strong> (detects tampering)</li>
+<li><strong>Parallelizable</strong></li>
+<li><strong>Fast</strong> (hardware support)</li>
+<li><strong>AEAD</strong> - can authenticate additional data without encrypting it</li>
+</ul>
+<div class="admonition success">
+<p class="admonition-title">Most recommended mode for new applications</p>
+</div>
+<hr />
+<h2 id="padding">Padding<a class="headerlink" href="#padding" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem_1">The Problem<a class="headerlink" href="#the-problem_1" title="Permanent link">&para;</a></h3>
+<p>Messages often aren't exact multiples of block size (16 bytes for AES).</p>
+<p><strong>Solution:</strong> Add padding to the last block.</p>
+<h3 id="pkcs7-padding">PKCS#7 Padding<a class="headerlink" href="#pkcs7-padding" title="Permanent link">&para;</a></h3>
+<p>Pad with bytes, each containing the <strong>number of padding bytes</strong>.</p>
+<p><strong>Examples:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Need 5 bytes: ... 05 05 05 05 05
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Need 1 byte:  ... 01
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Need full block: 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
+</code></pre></div></p>
+<p><strong>Why this works:</strong></p>
+<ul>
+<li>Always unambiguous</li>
+<li>Last byte tells you how much padding to remove</li>
+</ul>
+<hr />
+<h2 id="mode-comparison">Mode Comparison<a class="headerlink" href="#mode-comparison" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Parallelizable?</th>
+<th>Random Access?</th>
+<th>Padding?</th>
+<th>Authentication?</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ECB</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td><strong>NEVER USE</strong></td>
+</tr>
+<tr>
+<td>CBC</td>
+<td>Decrypt only</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>Legacy systems</td>
+</tr>
+<tr>
+<td>CTR</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>High speed needed</td>
+</tr>
+<tr>
+<td>GCM</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td><strong>Yes</strong></td>
+<td><strong>Recommended</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="aes-security">AES Security<a class="headerlink" href="#aes-security" title="Permanent link">&para;</a></h2>
+<h3 id="why-aes-is-secure">Why AES is Secure<a class="headerlink" href="#why-aes-is-secure" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Large key space</strong> (2¹²⁸ for AES-128)</li>
+<li><strong>No practical attacks</strong> known (only theoretical)</li>
+<li><strong>Confusion and diffusion</strong> well-designed</li>
+<li><strong>Extensive cryptanalysis</strong> by community</li>
+<li><strong>Hardware acceleration</strong> available (AES-NI)</li>
+</ol>
+<h3 id="known-attacks">Known Attacks<a class="headerlink" href="#known-attacks" title="Permanent link">&para;</a></h3>
+<p><strong>Brute force:</strong></p>
+<ul>
+<li>AES-128: 2¹²⁸ operations (infeasible)</li>
+<li>AES-256: 2²⁵⁶ operations (quantum computers might reduce to 2¹²⁸)</li>
+</ul>
+<p><strong>Theoretical attacks:</strong></p>
+<ul>
+<li>Slightly faster than brute force</li>
+<li>Still completely impractical</li>
+<li>Don't affect real-world security</li>
+</ul>
+<hr />
+<h2 id="implementation-pitfalls">Implementation Pitfalls<a class="headerlink" href="#implementation-pitfalls" title="Permanent link">&para;</a></h2>
+<h3 id="side-channel-attacks">Side-Channel Attacks<a class="headerlink" href="#side-channel-attacks" title="Permanent link">&para;</a></h3>
+<p><strong>Timing attacks:</strong> Measure how long operations take<br />
+<strong>Power analysis:</strong> Measure power consumption<br />
+<strong>Cache attacks:</strong> Exploit CPU cache behavior</p>
+<p><strong>Defense:</strong> Constant-time implementations</p>
+<h3 id="weak-keys">Weak Keys<a class="headerlink" href="#weak-keys" title="Permanent link">&para;</a></h3>
+<p><strong>No weak keys in AES</strong> (unlike DES)</p>
+<p>Every key is equally strong.</p>
+<h3 id="ivnonce-reuse">IV/Nonce Reuse<a class="headerlink" href="#ivnonce-reuse" title="Permanent link">&para;</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">CRITICAL: Never reuse IV/nonce with same key</p>
+<ul>
+<li>CBC: Predictable IV is vulnerable</li>
+<li>CTR/GCM: Reused nonce completely breaks security</li>
+</ul>
+</div>
+<hr />
+<h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>AES is the standard</strong> block cipher (128-bit blocks)</li>
+<li><strong>Never use ECB mode</strong> - patterns leak</li>
+<li><strong>CBC mode</strong> is okay but has issues</li>
+<li><strong>GCM mode is recommended</strong> - provides authentication</li>
+<li><strong>Galois Fields GF(2⁸)</strong> enable AES mathematics</li>
+<li><strong>IV/nonce must never repeat</strong> with same key</li>
+<li><strong>Use hardware AES</strong> when available (AES-NI)</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

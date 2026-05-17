@@ -1,0 +1,2507 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Cryptography notes from the University of Guelph">
+      
+      
+        <meta name="author" content="Sabrina Haniff">
+      
+      
+        <link rel="canonical" href="https://sabrinahaniff.github.io/CIS4520-Notes/signatures/">
+      
+      
+        <link rel="prev" href="../hash-functions/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Digital Signatures - CIS*4520 - Introduction to Cryptography</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-signatures" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="CIS*4520 - Introduction to Cryptography" class="md-header__button md-logo" aria-label="CIS*4520 - Introduction to Cryptography" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CIS*4520 - Introduction to Cryptography
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Digital Signatures
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../matrix-algebra/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../classical-ciphers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Classical Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../aes/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Symmetric Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../rsa/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Public Key Cryptography
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../hash-functions/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hash Functions
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Digital Signatures
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CIS*4520 - Introduction to Cryptography" class="md-nav__button md-logo" aria-label="CIS*4520 - Introduction to Cryptography" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CIS*4520 - Introduction to Cryptography
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../matrix-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matrix Algebra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modular-arithmetic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modular Arithmetic & GCD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classical Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Classical Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classical-ciphers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classical Ciphers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Symmetric Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Symmetric Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AES & Block Cipher Modes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public Key Cryptography
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public Key Cryptography
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rsa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSA Encryption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diffie-hellman/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diffie-Hellman & Key Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hash-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hash Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Signatures
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-digital-signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Digital Signature?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-digital-signatures-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Digital Signatures Work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-sign-the-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Sign the Hash?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Signatures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Signatures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-rsa-signatures-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why RSA Signatures Work
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why RSA Signatures Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#encryption-vs-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encryption vs Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Math
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dsa-digital-signature-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DSA (Digital Signature Algorithm)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DSA (Digital Signature Algorithm)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dsa-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DSA Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dsa-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DSA Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecdsa-elliptic-curve-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECDSA (Elliptic Curve DSA)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ECDSA (Elliptic Curve DSA)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elliptic-curve-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Elliptic Curve Basics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecdsa-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECDSA Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecdsa-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECDSA Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-of-signature-schemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison of Signature Schemes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#critical-security-issue-nonce-reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical Security Issue: Nonce Reuse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Critical Security Issue: Nonce Reuse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-playstation-3-hack-2010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The PlayStation 3 Hack (2010)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#signature-padding-rsa-pss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signature Padding (RSA-PSS)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Signature Padding (RSA-PSS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-with-textbook-rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem with Textbook RSA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rsa-pss-probabilistic-signature-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA-PSS (Probabilistic Signature Scheme)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#certificate-authorities-pki" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Certificate Authorities &amp; PKI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Certificate Authorities &amp; PKI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-trust-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Trust Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#digital-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Digital Certificates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chain-of-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chain of Trust
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-attacks-on-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Attacks on Signatures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Attacks on Signatures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-key-only-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Key-Only Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-known-message-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Known-Message Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-chosen-message-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Chosen-Message Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-hash-collision-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Hash Collision Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#applications-of-digital-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applications of Digital Signatures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Applications of Digital Signatures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-software-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Software Distribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-email-smime-pgp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Email (S/MIME, PGP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-code-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Code Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-blockchaincryptocurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Blockchain/Cryptocurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-legal-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Legal Documents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-tlsssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. TLS/SSL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-digital-signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Digital Signature?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-digital-signatures-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Digital Signatures Work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-sign-the-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Sign the Hash?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rsa-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA Signatures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA Signatures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-rsa-signatures-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why RSA Signatures Work
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why RSA Signatures Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#encryption-vs-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encryption vs Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Math
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dsa-digital-signature-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DSA (Digital Signature Algorithm)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DSA (Digital Signature Algorithm)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dsa-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DSA Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dsa-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DSA Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecdsa-elliptic-curve-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECDSA (Elliptic Curve DSA)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ECDSA (Elliptic Curve DSA)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elliptic-curve-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Elliptic Curve Basics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecdsa-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECDSA Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecdsa-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECDSA Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-of-signature-schemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison of Signature Schemes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#critical-security-issue-nonce-reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical Security Issue: Nonce Reuse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Critical Security Issue: Nonce Reuse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-playstation-3-hack-2010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The PlayStation 3 Hack (2010)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#signature-padding-rsa-pss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signature Padding (RSA-PSS)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Signature Padding (RSA-PSS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-with-textbook-rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem with Textbook RSA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rsa-pss-probabilistic-signature-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA-PSS (Probabilistic Signature Scheme)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#certificate-authorities-pki" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Certificate Authorities &amp; PKI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Certificate Authorities &amp; PKI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-trust-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Trust Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#digital-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Digital Certificates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chain-of-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chain of Trust
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-attacks-on-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Attacks on Signatures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Attacks on Signatures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-key-only-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Key-Only Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-known-message-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Known-Message Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-chosen-message-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Chosen-Message Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-hash-collision-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Hash Collision Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#applications-of-digital-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applications of Digital Signatures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Applications of Digital Signatures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-software-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Software Distribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-email-smime-pgp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Email (S/MIME, PGP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-code-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Code Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-blockchaincryptocurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Blockchain/Cryptocurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-legal-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Legal Documents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-tlsssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. TLS/SSL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Takeaways
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="digital-signatures">Digital Signatures<a class="headerlink" href="#digital-signatures" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-a-digital-signature">What is a Digital Signature?<a class="headerlink" href="#what-is-a-digital-signature" title="Permanent link">&para;</a></h2>
+<p>A <strong>digital signature</strong> is the cryptographic equivalent of a handwritten signature.</p>
+<p><strong>Purpose:</strong></p>
+<ul>
+<li><strong>Authentication</strong> - Proves who sent the message</li>
+<li><strong>Non-repudiation</strong> - Sender can't deny sending it</li>
+<li><strong>Integrity</strong> - Detects if message was modified</li>
+</ul>
+<hr />
+<h2 id="how-digital-signatures-work">How Digital Signatures Work<a class="headerlink" href="#how-digital-signatures-work" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant A as Alice (Signer)
+    participant B as Bob (Verifier)
+
+    Note over A: Signing
+    A-&gt;&gt;A: Compute h = H(message)
+    A-&gt;&gt;A: Compute s = Sign_SK(h)
+    A-&gt;&gt;B: Send message + signature s
+
+    Note over B: Verification
+    B-&gt;&gt;B: Compute h' = H(received message)
+    B-&gt;&gt;B: Compute h = Verify_PK(s)
+    B-&gt;&gt;B: Check h == h'?
+
+    alt Signatures match
+        Note over B: Valid! message is authentic and unmodified
+    else Signatures don't match
+        Note over B: Invalid! message was tampered or wrong sender
+    end</code></pre>
+<hr />
+<h2 id="why-sign-the-hash">Why Sign the Hash?<a class="headerlink" href="#why-sign-the-hash" title="Permanent link">&para;</a></h2>
+<p><strong>Don't sign the message directly!</strong></p>
+<p><strong>Reasons:</strong>
+1. <strong>Efficiency</strong> - Hash is small (256 bits), message could be gigabytes
+2. <strong>RSA limitations</strong> - Can only sign data smaller than modulus
+3. <strong>Security</strong> - Hash ensures integrity</p>
+<hr />
+<h2 id="rsa-signatures">RSA Signatures<a class="headerlink" href="#rsa-signatures" title="Permanent link">&para;</a></h2>
+<h3 id="key-generation">Key Generation<a class="headerlink" href="#key-generation" title="Permanent link">&para;</a></h3>
+<p>Same as RSA encryption:</p>
+<ol>
+<li>Choose primes <span class="arithmatex">\(p, q\)</span></li>
+<li>Compute <span class="arithmatex">\(n = pq\)</span></li>
+<li>Choose <span class="arithmatex">\(e\)</span> (public exponent)</li>
+<li>Compute <span class="arithmatex">\(d = e^{-1} \bmod \phi(n)\)</span> (private exponent)</li>
+</ol>
+<p><strong>Keys:</strong></p>
+<ul>
+<li><strong>Public key:</strong> <span class="arithmatex">\((n, e)\)</span> - for verification</li>
+<li><strong>Private key:</strong> <span class="arithmatex">\((n, d)\)</span> - for signing</li>
+</ul>
+<hr />
+<h3 id="signing">Signing<a class="headerlink" href="#signing" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[s = H(m)^d \bmod n\]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\(m\)</span> = message</li>
+<li><span class="arithmatex">\(H\)</span> = hash function (e.g., SHA-256)</li>
+<li><span class="arithmatex">\(d\)</span> = private key</li>
+<li><span class="arithmatex">\(s\)</span> = signature</li>
+</ul>
+<hr />
+<h3 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[h = s^e \bmod n\]</div>
+<p>Check: <span class="arithmatex">\(h \stackrel{?}{=} H(m)\)</span></p>
+<p><strong>If equal:</strong> Signature is valid ✓<br />
+<strong>If different:</strong> Signature is invalid or message was tampered ✗</p>
+<hr />
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<p><strong>Key generation:</strong></p>
+<ul>
+<li><span class="arithmatex">\(p = 61, q = 53\)</span></li>
+<li><span class="arithmatex">\(n = 3233\)</span></li>
+<li><span class="arithmatex">\(e = 17, d = 2753\)</span></li>
+</ul>
+<p><strong>Signing message</strong> "HELLO":</p>
+<ol>
+<li>Hash: <span class="arithmatex">\(H(\text{"HELLO"}) = 123\)</span> (simplified)</li>
+<li>Sign: <span class="arithmatex">\(s = 123^{2753} \bmod 3233 = 855\)</span></li>
+<li>Signature: <span class="arithmatex">\(s = 855\)</span></li>
+</ol>
+<p><strong>Verification:</strong></p>
+<ol>
+<li>Receive: message "HELLO" and signature <span class="arithmatex">\(s = 855\)</span></li>
+<li>Compute: <span class="arithmatex">\(h = 855^{17} \bmod 3233 = 123\)</span></li>
+<li>Check: <span class="arithmatex">\(H(\text{"HELLO"}) = 123\)</span> ✓</li>
+<li><strong>Valid!</strong></li>
+</ol>
+<hr />
+<h2 id="why-rsa-signatures-work">Why RSA Signatures Work<a class="headerlink" href="#why-rsa-signatures-work" title="Permanent link">&para;</a></h2>
+<h3 id="encryption-vs-signing">Encryption vs Signing<a class="headerlink" href="#encryption-vs-signing" title="Permanent link">&para;</a></h3>
+<p><strong>Encryption:</strong></p>
+<div class="arithmatex">\[C = M^e \bmod n \quad (\text{public key})$$
+$$M = C^d \bmod n \quad (\text{private key})\]</div>
+<p><strong>Signing (reverse order):</strong></p>
+<div class="arithmatex">\[s = H(m)^d \bmod n \quad (\text{private key})$$
+$$h = s^e \bmod n \quad (\text{public key})\]</div>
+<h3 id="the-math">The Math<a class="headerlink" href="#the-math" title="Permanent link">&para;</a></h3>
+<p>Since:</p>
+<div class="arithmatex">\[(H(m)^d)^e \equiv H(m)^{de} \equiv H(m) \pmod{n}\]</div>
+<p>Only the person with private key <span class="arithmatex">\(d\)</span> can create valid signature!</p>
+<hr />
+<h2 id="dsa-digital-signature-algorithm">DSA (Digital Signature Algorithm)<a class="headerlink" href="#dsa-digital-signature-algorithm" title="Permanent link">&para;</a></h2>
+<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
+<p><strong>DSA</strong> is a signature scheme specifically designed for signing (not encryption).</p>
+<p><strong>Used in:</strong> US government, SSH keys, some TLS</p>
+<h3 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h3>
+<p><strong>Domain parameters</strong> (shared by everyone):</p>
+<ul>
+<li><span class="arithmatex">\(p\)</span> - large prime (2048+ bits)</li>
+<li><span class="arithmatex">\(q\)</span> - prime divisor of <span class="arithmatex">\(p-1\)</span> (256 bits)</li>
+<li><span class="arithmatex">\(g\)</span> - generator</li>
+</ul>
+<p><strong>Keys:</strong></p>
+<ul>
+<li>Private key: <span class="arithmatex">\(x\)</span> (random, <span class="arithmatex">\(0 &lt; x &lt; q\)</span>)</li>
+<li>Public key: <span class="arithmatex">\(y = g^x \bmod p\)</span></li>
+</ul>
+<hr />
+<h3 id="dsa-signing">DSA Signing<a class="headerlink" href="#dsa-signing" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> Message <span class="arithmatex">\(m\)</span></p>
+<ol>
+<li>Choose random <span class="arithmatex">\(k\)</span> where <span class="arithmatex">\(0 &lt; k &lt; q\)</span></li>
+<li>Compute <span class="arithmatex">\(r = (g^k \bmod p) \bmod q\)</span></li>
+<li>Compute <span class="arithmatex">\(s = k^{-1}(H(m) + xr) \bmod q\)</span></li>
+</ol>
+<p><strong>Signature:</strong> <span class="arithmatex">\((r, s)\)</span></p>
+<div class="admonition danger">
+<p class="admonition-title">CRITICAL</p>
+<p><span class="arithmatex">\(k\)</span> must be <strong>truly random</strong> and <strong>never reused!</strong></p>
+</div>
+<hr />
+<h3 id="dsa-verification">DSA Verification<a class="headerlink" href="#dsa-verification" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> Message <span class="arithmatex">\(m\)</span>, signature <span class="arithmatex">\((r, s)\)</span>, public key <span class="arithmatex">\(y\)</span></p>
+<ol>
+<li>Compute <span class="arithmatex">\(w = s^{-1} \bmod q\)</span></li>
+<li>Compute <span class="arithmatex">\(u_1 = H(m) \cdot w \bmod q\)</span></li>
+<li>Compute <span class="arithmatex">\(u_2 = r \cdot w \bmod q\)</span></li>
+<li>Compute <span class="arithmatex">\(v = (g^{u_1} y^{u_2} \bmod p) \bmod q\)</span></li>
+</ol>
+<p><strong>Check:</strong> <span class="arithmatex">\(v \stackrel{?}{=} r\)</span></p>
+<p>If equal → valid ✓</p>
+<hr />
+<h2 id="ecdsa-elliptic-curve-dsa">ECDSA (Elliptic Curve DSA)<a class="headerlink" href="#ecdsa-elliptic-curve-dsa" title="Permanent link">&para;</a></h2>
+<h3 id="overview_1">Overview<a class="headerlink" href="#overview_1" title="Permanent link">&para;</a></h3>
+<p><strong>ECDSA</strong> is DSA using elliptic curve cryptography.</p>
+<p><strong>Advantages over DSA/RSA:</strong></p>
+<ul>
+<li><strong>Smaller keys</strong> - 256-bit ECDSA ≈ 3072-bit RSA</li>
+<li><strong>Faster</strong> operations</li>
+<li><strong>Same security</strong> with less computation</li>
+</ul>
+<p><strong>Used in:</strong> Bitcoin, Ethereum, TLS, SSH</p>
+<hr />
+<h3 id="elliptic-curve-basics">Elliptic Curve Basics<a class="headerlink" href="#elliptic-curve-basics" title="Permanent link">&para;</a></h3>
+<p><strong>Curve equation:</strong></p>
+<div class="arithmatex">\[y^2 = x^3 + ax + b\]</div>
+<p><strong>Point addition:</strong> Special geometric operation</p>
+<p><strong>Scalar multiplication:</strong></p>
+<div class="arithmatex">\[kP = P + P + \cdots + P \quad (k \text{ times})\]</div>
+<p><strong>Hard problem:</strong> Given <span class="arithmatex">\(P\)</span> and <span class="arithmatex">\(Q = kP\)</span>, find <span class="arithmatex">\(k\)</span> (discrete log)</p>
+<hr />
+<h3 id="ecdsa-signing">ECDSA Signing<a class="headerlink" href="#ecdsa-signing" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> Message <span class="arithmatex">\(m\)</span>, private key <span class="arithmatex">\(d\)</span></p>
+<ol>
+<li>Choose random <span class="arithmatex">\(k\)</span></li>
+<li>Compute point <span class="arithmatex">\((x_1, y_1) = kG\)</span> (where <span class="arithmatex">\(G\)</span> is base point)</li>
+<li>Compute <span class="arithmatex">\(r = x_1 \bmod n\)</span></li>
+<li>Compute <span class="arithmatex">\(s = k^{-1}(H(m) + dr) \bmod n\)</span></li>
+</ol>
+<p><strong>Signature:</strong> <span class="arithmatex">\((r, s)\)</span></p>
+<div class="admonition danger">
+<p class="admonition-title">CRITICAL: Never reuse k!</p>
+</div>
+<hr />
+<h3 id="ecdsa-verification">ECDSA Verification<a class="headerlink" href="#ecdsa-verification" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> Message <span class="arithmatex">\(m\)</span>, signature <span class="arithmatex">\((r, s)\)</span>, public key <span class="arithmatex">\(Q\)</span></p>
+<ol>
+<li>Compute <span class="arithmatex">\(w = s^{-1} \bmod n\)</span></li>
+<li>Compute <span class="arithmatex">\(u_1 = H(m) \cdot w \bmod n\)</span></li>
+<li>Compute <span class="arithmatex">\(u_2 = r \cdot w \bmod n\)</span></li>
+<li>Compute point <span class="arithmatex">\((x_1, y_1) = u_1 G + u_2 Q\)</span></li>
+<li>Check: <span class="arithmatex">\(r \stackrel{?}{=} x_1 \bmod n\)</span></li>
+</ol>
+<hr />
+<h2 id="comparison-of-signature-schemes">Comparison of Signature Schemes<a class="headerlink" href="#comparison-of-signature-schemes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Scheme</th>
+<th>Key Size</th>
+<th>Signature Size</th>
+<th>Speed</th>
+<th>Security</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RSA-2048</td>
+<td>2048 bits</td>
+<td>2048 bits</td>
+<td>Slow sign, fast verify</td>
+<td>High</td>
+</tr>
+<tr>
+<td>RSA-3072</td>
+<td>3072 bits</td>
+<td>3072 bits</td>
+<td>Slower</td>
+<td>Very high</td>
+</tr>
+<tr>
+<td>DSA-2048</td>
+<td>2048 bits</td>
+<td>320 bits</td>
+<td>Medium</td>
+<td>High</td>
+</tr>
+<tr>
+<td>ECDSA-256</td>
+<td>256 bits</td>
+<td>512 bits</td>
+<td>Fast</td>
+<td>High (≈ RSA-3072)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Trend:</strong> Moving toward ECDSA for efficiency.</p>
+<hr />
+<h2 id="critical-security-issue-nonce-reuse">Critical Security Issue: Nonce Reuse<a class="headerlink" href="#critical-security-issue-nonce-reuse" title="Permanent link">&para;</a></h2>
+<h3 id="the-playstation-3-hack-2010">The PlayStation 3 Hack (2010)<a class="headerlink" href="#the-playstation-3-hack-2010" title="Permanent link">&para;</a></h3>
+<p>Sony's PS3 signing keys were compromised because they <strong>reused the same <span class="arithmatex">\(k\)</span> value</strong> in ECDSA!</p>
+<p><strong>Attack:</strong></p>
+<ul>
+<li>Two signatures <span class="arithmatex">\((r_1, s_1)\)</span> and <span class="arithmatex">\((r_2, s_2)\)</span> with same <span class="arithmatex">\(k\)</span></li>
+<li>Since <span class="arithmatex">\(r_1 = r_2\)</span>, attacker can solve for <span class="arithmatex">\(k\)</span></li>
+<li>Once <span class="arithmatex">\(k\)</span> is known, private key <span class="arithmatex">\(d\)</span> can be recovered!</li>
+</ul>
+<div class="arithmatex">\[k = \frac{H(m_1) - H(m_2)}{s_1 - s_2} \bmod n\]</div>
+<div class="arithmatex">\[d = \frac{sk - H(m)}{r} \bmod n\]</div>
+<div class="admonition danger">
+<p class="admonition-title">Lesson: NEVER reuse nonces in signatures!</p>
+</div>
+<hr />
+<h2 id="signature-padding-rsa-pss">Signature Padding (RSA-PSS)<a class="headerlink" href="#signature-padding-rsa-pss" title="Permanent link">&para;</a></h2>
+<h3 id="problem-with-textbook-rsa">Problem with Textbook RSA<a class="headerlink" href="#problem-with-textbook-rsa" title="Permanent link">&para;</a></h3>
+<p><strong>Textbook RSA signature:</strong></p>
+<div class="arithmatex">\[s = H(m)^d \bmod n\]</div>
+<p><strong>Vulnerabilities:</strong></p>
+<ul>
+<li>Deterministic (no randomness)</li>
+<li>Malleable (can manipulate)</li>
+<li>Vulnerable to chosen-message attacks</li>
+</ul>
+<hr />
+<h3 id="rsa-pss-probabilistic-signature-scheme">RSA-PSS (Probabilistic Signature Scheme)<a class="headerlink" href="#rsa-pss-probabilistic-signature-scheme" title="Permanent link">&para;</a></h3>
+<p>Adds <strong>randomness</strong> and <strong>structure</strong> before signing.</p>
+<p><strong>Process:</strong></p>
+<ol>
+<li>Hash message: <span class="arithmatex">\(h = H(m)\)</span></li>
+<li>Generate random salt</li>
+<li>Apply padding scheme with hash and salt</li>
+<li>Sign the padded value</li>
+</ol>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li><strong>Non-deterministic</strong> (different signature each time)</li>
+<li><strong>Provably secure</strong></li>
+<li><strong>Prevents forgery</strong></li>
+</ul>
+<div class="admonition success">
+<p class="admonition-title">Current standard: Always use PSS padding for RSA signatures!</p>
+</div>
+<hr />
+<h2 id="certificate-authorities-pki">Certificate Authorities &amp; PKI<a class="headerlink" href="#certificate-authorities-pki" title="Permanent link">&para;</a></h2>
+<h3 id="the-trust-problem">The Trust Problem<a class="headerlink" href="#the-trust-problem" title="Permanent link">&para;</a></h3>
+<p><strong>Question:</strong> How do you know a public key belongs to who it claims?</p>
+<p><strong>Without trust:</strong> Man-in-the-middle attacks possible</p>
+<hr />
+<h3 id="digital-certificates">Digital Certificates<a class="headerlink" href="#digital-certificates" title="Permanent link">&para;</a></h3>
+<p>A <strong>certificate</strong> binds a public key to an identity.</p>
+<p><strong>Contains:</strong></p>
+<ul>
+<li>Subject name (e.g., "google.com")</li>
+<li>Subject public key</li>
+<li>Issuer (Certificate Authority)</li>
+<li>Validity period</li>
+<li><strong>Signature from CA</strong></li>
+</ul>
+<p><strong>Format:</strong> X.509</p>
+<hr />
+<h3 id="chain-of-trust">Chain of Trust<a class="headerlink" href="#chain-of-trust" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    R([" Root CA\n(self-signed, pre-installed\nin browsers &amp; OS)"])
+    I[" Intermediate CA\n(signed by Root CA)"]
+    W[" Website Certificate\ne.g. google.com\n(signed by Intermediate CA)"]
+    B[" Browser / User"]
+
+    R --&gt;|"Signs"| I
+    I --&gt;|"Signs"| W
+    W --&gt;|"Presented to"| B
+    B --&gt;|"Verifies chain back to"| R
+
+    style R fill:#7c4dff,color:#fff
+    style B fill:#00897b,color:#fff</code></pre>
+<p><strong>Verification:</strong> Follow chain up to trusted root.</p>
+<hr />
+<h2 id="common-attacks-on-signatures">Common Attacks on Signatures<a class="headerlink" href="#common-attacks-on-signatures" title="Permanent link">&para;</a></h2>
+<h3 id="1-key-only-attack">1. Key-Only Attack<a class="headerlink" href="#1-key-only-attack" title="Permanent link">&para;</a></h3>
+<p>Attacker has:</p>
+<ul>
+<li>Public key</li>
+<li>No message-signature pairs</li>
+</ul>
+<p><strong>Goal:</strong> Forge a signature</p>
+<p><strong>Defense:</strong> Proper signature scheme (RSA-PSS, ECDSA)</p>
+<hr />
+<h3 id="2-known-message-attack">2. Known-Message Attack<a class="headerlink" href="#2-known-message-attack" title="Permanent link">&para;</a></h3>
+<p>Attacker has:</p>
+<ul>
+<li>Public key</li>
+<li>Some valid message-signature pairs</li>
+</ul>
+<p><strong>Defense:</strong> Hash randomization, PSS padding</p>
+<hr />
+<h3 id="3-chosen-message-attack">3. Chosen-Message Attack<a class="headerlink" href="#3-chosen-message-attack" title="Permanent link">&para;</a></h3>
+<p>Attacker can get signatures on chosen messages.</p>
+<p><strong>Defense:</strong> Secure signature scheme with proof</p>
+<hr />
+<h3 id="4-hash-collision-attack">4. Hash Collision Attack<a class="headerlink" href="#4-hash-collision-attack" title="Permanent link">&para;</a></h3>
+<p>If attacker finds <span class="arithmatex">\(m_1\)</span> and <span class="arithmatex">\(m_2\)</span> where <span class="arithmatex">\(H(m_1) = H(m_2)\)</span>:</p>
+<ul>
+<li>Get signature on <span class="arithmatex">\(m_1\)</span></li>
+<li>Signature also valid for <span class="arithmatex">\(m_2\)</span>!</li>
+</ul>
+<p><strong>Defense:</strong> Use collision-resistant hash (SHA-256, SHA-3)</p>
+<hr />
+<h2 id="applications-of-digital-signatures">Applications of Digital Signatures<a class="headerlink" href="#applications-of-digital-signatures" title="Permanent link">&para;</a></h2>
+<h3 id="1-software-distribution">1. Software Distribution<a class="headerlink" href="#1-software-distribution" title="Permanent link">&para;</a></h3>
+<p>Sign software packages to prove authenticity.</p>
+<p><strong>Example:</strong> App stores, OS updates</p>
+<hr />
+<h3 id="2-email-smime-pgp">2. Email (S/MIME, PGP)<a class="headerlink" href="#2-email-smime-pgp" title="Permanent link">&para;</a></h3>
+<p>Sign emails to prove sender and detect tampering.</p>
+<hr />
+<h3 id="3-code-signing">3. Code Signing<a class="headerlink" href="#3-code-signing" title="Permanent link">&para;</a></h3>
+<p>Prove code hasn't been modified.</p>
+<p><strong>Example:</strong> Driver signing, kernel modules</p>
+<hr />
+<h3 id="4-blockchaincryptocurrency">4. Blockchain/Cryptocurrency<a class="headerlink" href="#4-blockchaincryptocurrency" title="Permanent link">&para;</a></h3>
+<p>Every transaction is signed.</p>
+<p><strong>Bitcoin:</strong> ECDSA signatures prove ownership.</p>
+<hr />
+<h3 id="5-legal-documents">5. Legal Documents<a class="headerlink" href="#5-legal-documents" title="Permanent link">&para;</a></h3>
+<p>Electronic signatures with legal validity.</p>
+<p><strong>Standards:</strong> eIDAS (EU), ESIGN Act (US)</p>
+<hr />
+<h3 id="6-tlsssl">6. TLS/SSL<a class="headerlink" href="#6-tlsssl" title="Permanent link">&para;</a></h3>
+<p>Server signs handshake to prove identity.</p>
+<hr />
+<h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Digital signatures</strong> provide authentication, integrity, and non-repudiation</li>
+<li><strong>Always sign the hash</strong>, never the message directly</li>
+<li><strong>RSA</strong> can be used for signatures (reverse of encryption)</li>
+<li><strong>DSA</strong> is designed specifically for signatures</li>
+<li><strong>ECDSA</strong> offers same security with smaller keys</li>
+<li><strong>Never reuse nonces</strong> (k values) in DSA/ECDSA</li>
+<li><strong>Use PSS padding</strong> for RSA signatures</li>
+<li><strong>Certificate Authorities</strong> establish trust in public keys</li>
+<li><strong>Chain of trust</strong> connects certificates to root CAs</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
