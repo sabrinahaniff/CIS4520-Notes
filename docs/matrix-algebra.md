@@ -4,6 +4,7 @@
 
 Matrices are used to:
 
+
 - **Mix information** in a structured way
 - **Hide patterns** in data
 - **Build ciphers** (e.g., Hill cipher)
